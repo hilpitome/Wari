@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Wari</string>
+
+    <!--Navigation Drawer-->
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="transfers_title">transfer requests</string>
+    <string name="withdrawals_title">withdrawal requests</string>
+</resources>
