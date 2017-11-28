@@ -42,13 +42,12 @@ public class IncomingSms extends BroadcastReceiver {
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     Context context;
     DatabaseHandler databaseHandler;
-    String[] months;
+
 
 
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        months = new String[]{"Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
         this.context = context;
         Bundle bundle = intent.getExtras();
@@ -66,7 +65,7 @@ public class IncomingSms extends BroadcastReceiver {
 
                     String message = currentSMS.getDisplayMessageBody();
 
-                    if (message.toLowerCase().contains("ENVOI")) {
+                    if (message.toLowerCase().contains("envoi")) {
 
                         String[] messageArray = message.split("\\#");
                         String[] senderInfoArr = messageArray[0].split("\\*");
@@ -98,7 +97,8 @@ public class IncomingSms extends BroadcastReceiver {
                         sendToMySqlTask.execute(requestData);
 
 
-                    } else if (message.toLowerCase().contains("RETRAIT")) {
+                    } else if (message.toLowerCase().contains("retrait")) {
+
                         String lastname, firstname, phone, confirmation;
                         String[] withdrawalMsgArr = message.split("\\*");
                         lastname = withdrawalMsgArr[1];
@@ -106,11 +106,12 @@ public class IncomingSms extends BroadcastReceiver {
                         phone = withdrawalMsgArr[3];
                         confirmation = withdrawalMsgArr[4];
 
+
                         WithdrawalData withdrawalData = new WithdrawalData(now, lastname, firstname, phone, confirmation);
+
 
                         databaseHandler.addWithdrawalData(withdrawalData);
                         SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
-
                         sendToMySqlTask.execute(withdrawalData);
                     }
 
@@ -165,18 +166,18 @@ public class IncomingSms extends BroadcastReceiver {
 //                Log.e("phone", messagesOperatuerData.getSimNumber());
             }
 
-            Request request = new Request.Builder()
-                    .url(mUrl)
-                    .post(formBody)
-                    .build();
-            try {
-                Response response = client.newCall(request).execute();
-                resp = response.body().string();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            }
+//            Request request = new Request.Builder()
+//                    .url(mUrl)
+//                    .post(formBody)
+//                    .build();
+//            try {
+//                Response response = client.newCall(request).execute();
+//                resp = response.body().string();
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//
+//            }
 
             return resp;
         }

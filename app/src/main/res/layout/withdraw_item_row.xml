@@ -62,11 +62,12 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/sd_number_title"
+                android:id="@+id/confirmation_title"
                 android:textColor="@color/orange_400"
                 android:text="CONFIRMATION"
                 android:layout_marginRight="8dp"/>

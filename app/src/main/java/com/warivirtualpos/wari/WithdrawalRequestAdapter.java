@@ -25,7 +25,7 @@ public class WithdrawalRequestAdapter extends RecyclerView.Adapter<WithdrawalReq
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.request_item_row, parent, false);
+            .inflate(R.layout.withdraw_item_row, parent, false);
 
             return new MyViewHolder(itemView);
         }
@@ -33,6 +33,10 @@ public class WithdrawalRequestAdapter extends RecyclerView.Adapter<WithdrawalReq
         @Override
         public void onBindViewHolder(MyViewHolder holder, int position) {
             WithdrawalData withdrawalData = withdrawalDataList.get(position);
+            holder.lastnameTv.setText(withdrawalData.getLastname());
+            holder.firstnameTv.setText(withdrawalData.getFirstname());
+            holder.phoneTv.setText(withdrawalData.getPhone());
+            holder.confirmationTv.setText(withdrawalData.getConfirmation());
 
         }
 

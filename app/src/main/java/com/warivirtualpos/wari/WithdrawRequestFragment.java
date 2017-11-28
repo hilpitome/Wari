@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ public class WithdrawRequestFragment extends Fragment {
         super.onCreate(savedInstanceState);
         databaseHandler = new DatabaseHandler(getActivity());
         records = databaseHandler.getWithdrawalData();
+        Log.e("records", String.valueOf(records.size()));
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

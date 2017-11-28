@@ -37,9 +37,9 @@ public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequest
             holder.senderLastnameTv.setText(requestData.getSenderLastName());
             holder.senderFirstnameTv.setText(requestData.getSenderFirstname());
             holder.senderPhoneTv.setText(requestData.getSenderPhone());
-            holder.amountTv.setText(requestData.getAmount());
+            holder.amountTv.setText(String.valueOf(requestData.getAmount()));
             holder.beneficiaryLastnameTv.setText(requestData.getBeneficiaryFirstname());
-            holder.beneficiaryFirstnameTv.setText(requestData.getBeneficiaryFirstname());
+            holder.beneficiaryFirstnameTv.setText(requestData.getBeneficiaryLastname());
             holder.beneficiaryPhoneTv.setText(requestData.getBeneficiaryPhone());
 
         }

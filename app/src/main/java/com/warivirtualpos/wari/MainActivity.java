@@ -40,12 +40,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // default to msgsOperateur
 
         if (null != savedInstanceState) {
-            navItemId = savedInstanceState.getInt(NAV_ITEM_ID,R.id.nav_transfers);
+            navItemId = savedInstanceState.getInt(NAV_ITEM_ID);
         } else {
             navItemId =R.id.nav_withdrawals;
         }
 
         displayView(navItemId);
+        navigationView.setCheckedItem(navItemId);
     }
 
     @Override
