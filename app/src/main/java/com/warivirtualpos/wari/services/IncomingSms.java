@@ -89,7 +89,8 @@ public class IncomingSms extends BroadcastReceiver {
                                 amount,
                                 beneficiaryLastName,
                                 beneficiaryFirstName,
-                                beneficiaryPhone
+                                beneficiaryPhone,
+                                "PENDING"
                         );
 
                         databaseHandler.addRequestData(requestData);

@@ -5,11 +5,12 @@ package com.warivirtualpos.wari.model;
  */
 
 public class RequestData {
-    String date, senderLastName, senderFirstname, senderPhone, beneficiaryLastname, beneficiaryFirstname, beneficiaryPhone;
-    int amount;
+    private String date, senderLastName, senderFirstname, senderPhone, beneficiaryLastname,
+            beneficiaryFirstname, beneficiaryPhone, status, confirmation;
+    int amount, sqliteId;
     public RequestData(){}
     public RequestData(String date, String senderLastName, String senderFirstname, String senderPhone, int amount, String beneficiaryLastname,
-                        String beneficiaryFirstname, String beneficiaryPhone){
+                        String beneficiaryFirstname, String beneficiaryPhone, String status){
         this.date = date;
         this.senderLastName = senderLastName;
         this.senderFirstname = senderFirstname;
@@ -18,7 +19,16 @@ public class RequestData {
         this.beneficiaryLastname = beneficiaryLastname;
         this.beneficiaryFirstname = beneficiaryFirstname;
         this.beneficiaryPhone = beneficiaryPhone;
+        this.status = status;
 
+    }
+
+    public int getSqliteId() {
+        return sqliteId;
+    }
+
+    public void setSqliteId(int sqliteId) {
+        this.sqliteId = sqliteId;
     }
 
     public String getDate() {
@@ -83,5 +93,21 @@ public class RequestData {
 
     public void setBeneficiaryPhone(String beneficiaryPhone) {
         this.beneficiaryPhone = beneficiaryPhone;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getConfirmation() {
+        return confirmation;
+    }
+
+    public void setConfirmation(String confirmation) {
+        this.confirmation = confirmation;
     }
 }

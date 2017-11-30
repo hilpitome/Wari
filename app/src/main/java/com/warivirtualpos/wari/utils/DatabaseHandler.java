@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 
@@ -18,7 +20,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 5;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
@@ -29,6 +31,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // Common Table Columns names
     private static final String ID = "_id";
     private static final String DATE = "date";
+    private static final String CONFIRMATION = "confirmation";
 
     // transfer_requests column names
     private static final String SENDER_LAST_NAME = "sender_last_name";
@@ -38,11 +41,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String BENEFICIARY_LAST_NAME = "beneficiary_last_name";
     private static final String BENEFICIARY_FIRST_NAME= "beneficiary_first_name";
     private static final String BENEFICIARY_PHONE = "beneficiary_phone";
+    private static final String STATUS = "status";
     // withrawal_requests column names
     private static final String WITHDRAWER_LAST_NAME = "last_name";
     private static final String WITHDRAWER_FIRST_NAME = "first_name";
     private static final String WITHDARAWER_PHONE = "withdrawer_phone";
-    private static final String CONFIRMATION = "confirmation";
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -54,7 +58,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_TABLE_TRANSFER_REQUESTS = "CREATE TABLE " + TABLE_TRANSFER_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," + DATE + " TEXT,"+ SENDER_LAST_NAME + " TEXT,"
                 + SENDER_FIRST_NAME  + " TEXT," + SENDER_PHONE + " TEXT," + AMOUNT+ " INTEGER," + BENEFICIARY_LAST_NAME+ " TEXT,"+
-                BENEFICIARY_FIRST_NAME+ " TEXT,"+BENEFICIARY_PHONE+" TEXT"+")";
+                BENEFICIARY_FIRST_NAME+ " TEXT,"+BENEFICIARY_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
 
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," + DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
@@ -88,6 +92,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(BENEFICIARY_FIRST_NAME, requestData.getBeneficiaryFirstname());
         contentValues.put(BENEFICIARY_PHONE, requestData.getBeneficiaryPhone());
         contentValues.put(AMOUNT,requestData.getAmount());
+        contentValues.put(STATUS, requestData.getStatus());
 
         db.insert(TABLE_TRANSFER_REQUESTS , null, contentValues);
         db.close();
@@ -103,7 +108,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             // Extract data.
 
             int id = cursor.getInt(cursor.getColumnIndex(ID));
-            String date =      cursor.getString(cursor.getColumnIndex(DATE));
+            String date =  cursor.getString(cursor.getColumnIndex(DATE));
             String senderLastName = cursor.getString(cursor.getColumnIndex(SENDER_LAST_NAME));
             String senderFirstName = cursor.getString(cursor.getColumnIndex(SENDER_FIRST_NAME));
             String senderPhone = cursor.getString(cursor.getColumnIndex(SENDER_PHONE));
@@ -111,8 +116,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String beneficiaryLastName = cursor.getString(cursor.getColumnIndex(BENEFICIARY_LAST_NAME));
             String beneficiaryFirstName = cursor.getString(cursor.getColumnIndex(BENEFICIARY_FIRST_NAME));
             String beneficiaryPhone = cursor.getString(cursor.getColumnIndex(BENEFICIARY_PHONE));
-            records.add(new RequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
-                    beneficiaryPhone));
+            String status = cursor.getString(cursor.getColumnIndex(STATUS));
+            String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+            RequestData requestData= new RequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
+                    beneficiaryPhone, status);
+            requestData.setSqliteId(id);
+            requestData.setConfirmation(confirmation);
+            records.add(requestData);
         }
 
 
@@ -123,7 +133,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     public void addWithdrawalData(WithdrawalData withdrawalData){
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(DATE, withdrawalData.getDate());
         contentValues.put(WITHDRAWER_LAST_NAME, withdrawalData.getLastname());
@@ -156,6 +165,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
         return  records;
+    }
+    public boolean updateTransferRequestConfirmation(int id, String confirmation){
+        String confi = "";
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CONFIRMATION, confirmation);
+        cv.put(STATUS, "OK");
+        db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
+        db.close();
+        return true;
+
     }
 
 }

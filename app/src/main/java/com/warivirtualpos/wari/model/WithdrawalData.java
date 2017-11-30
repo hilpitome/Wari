@@ -6,15 +6,25 @@ package com.warivirtualpos.wari.model;
 
 public class WithdrawalData {
     String date, lastname, firstname, phone, confirmation;
+    int sqliteId;
     public WithdrawalData(){
     }
     public WithdrawalData(String date, String lastname, String firstname, String phone, String confirmation){
+        this.sqliteId = sqliteId;
         this.date = date;
         this.lastname = lastname;
         this.firstname = firstname;
         this.phone = phone;
         this.confirmation = confirmation;
 
+    }
+
+    public int getSqliteId() {
+        return sqliteId;
+    }
+
+    public void setSqliteId(int sqliteId) {
+        this.sqliteId = sqliteId;
     }
 
     public String getDate() {

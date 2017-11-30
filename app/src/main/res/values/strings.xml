@@ -6,4 +6,6 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="transfers_title">transfer requests</string>
     <string name="withdrawals_title">withdrawal requests</string>
+    <string name="status">STATUS</string>
+    <string name="pending">PENDING</string>
 </resources>
