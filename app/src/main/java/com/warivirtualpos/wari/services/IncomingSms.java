@@ -14,6 +14,7 @@ import android.widget.Toast;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
+import com.warivirtualpos.wari.utils.WariSecrets;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -36,7 +37,7 @@ public class IncomingSms extends BroadcastReceiver {
      */
     private static final String TAG = IncomingSms.class.getSimpleName();
 
-    private String mUrl = "http://telecomtransborder.com/caurix/API/SmsReports.php";
+    private String mUrl = "";
 //    private String mUrl = "http://192.168.1.4/index.php";
 
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
@@ -51,6 +52,9 @@ public class IncomingSms extends BroadcastReceiver {
 
         this.context = context;
         Bundle bundle = intent.getExtras();
+        mUrl = WariSecrets.mUrl;
+
+        Log.e("mUrl", mUrl);
         if (bundle != null) {
             Object[] pdu_Objects = (Object[]) bundle.get("pdus");
             if (pdu_Objects != null) {
@@ -106,7 +110,6 @@ public class IncomingSms extends BroadcastReceiver {
                         firstname = withdrawalMsgArr[2];
                         phone = withdrawalMsgArr[3];
                         confirmation = withdrawalMsgArr[4];
-
 
                         WithdrawalData withdrawalData = new WithdrawalData(now, lastname, firstname, phone, confirmation);
 
