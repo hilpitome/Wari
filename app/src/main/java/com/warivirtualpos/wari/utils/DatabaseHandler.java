@@ -209,8 +209,38 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         requestData.setSqliteId(id);
         requestData.setConfirmation(confirmation);
 
+        db.close();
+
         return  requestData;
 
+    }
+    public WithdrawalData getSingleWithdrawalRecord(int id){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_WITHDRAWAL_REQUESTS + " WHERE "
+                + ID + " = " + id;
+        Log.d("singleWithdrawalData", selectQuery);
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+        int sqliteId = cursor.getInt(cursor.getColumnIndex(ID));
+        String date =  cursor.getString(cursor.getColumnIndex(DATE));
+        String firstName = cursor.getString(cursor.getColumnIndex(WITHDRAWER_FIRST_NAME));
+        String lastName = cursor.getString(cursor.getColumnIndex(WITHDRAWER_LAST_NAME));
+        String phone = cursor.getString(cursor.getColumnIndex(WITHDARAWER_PHONE));
+        String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+        WithdrawalData withdrawalData = new WithdrawalData();
+        withdrawalData.setSqliteId(sqliteId);
+        withdrawalData.setDate(date);
+        withdrawalData.setFirstname(firstName);
+        withdrawalData.setLastname(lastName);
+        withdrawalData.setPhone(phone);
+        withdrawalData.setConfirmation(confirmation);
+
+        db.close();
+
+        return withdrawalData;
 
     }
 

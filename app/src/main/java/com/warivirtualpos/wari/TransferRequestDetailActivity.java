@@ -16,8 +16,10 @@ import android.widget.Toast;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 
+import static com.warivirtualpos.wari.R.string.app_name;
+
 public class TransferRequestDetailActivity extends AppCompatActivity implements View.OnClickListener {
-    private  DatabaseHandler databaseHandler = new DatabaseHandler(this);
+    private  DatabaseHandler databaseHandler;
     private TextView senderLastName, senderFirstName, senderPhoneNumber,amountTv, beneficiaryFirstName, beneficiaryLastName,
         beneficiaryPhone;
     private EditText confirmationEt;
@@ -34,9 +36,10 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_transfer_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("TransferRequest Detail Version 1");
         Bundle bundle = getIntent().getExtras();
         sqliteId = bundle.getInt("sqliteId");
-
+        databaseHandler = new DatabaseHandler(this);
 
         requestData = databaseHandler.getSingleRequestRecord(sqliteId);
 

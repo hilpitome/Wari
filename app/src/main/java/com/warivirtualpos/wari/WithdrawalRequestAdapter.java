@@ -1,6 +1,8 @@
 package com.warivirtualpos.wari;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,10 +17,11 @@ import java.util.List;
  */
 
 public class WithdrawalRequestAdapter extends RecyclerView.Adapter<WithdrawalRequestAdapter.MyViewHolder>  {
-
+    private Context context;
     private List<WithdrawalData> withdrawalDataList;
 
         public WithdrawalRequestAdapter(Context context, List<WithdrawalData> withdrawalDataList){
+            this.context = context;
             this.withdrawalDataList = withdrawalDataList;
         }
 
@@ -31,12 +34,23 @@ public class WithdrawalRequestAdapter extends RecyclerView.Adapter<WithdrawalReq
         }
 
         @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
+        public void onBindViewHolder(MyViewHolder holder, final int position) {
             WithdrawalData withdrawalData = withdrawalDataList.get(position);
             holder.lastnameTv.setText(withdrawalData.getLastname());
             holder.firstnameTv.setText(withdrawalData.getFirstname());
             holder.phoneTv.setText(withdrawalData.getPhone());
             holder.confirmationTv.setText(withdrawalData.getConfirmation());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    WithdrawalData item = withdrawalDataList.get(position);
+                    int id = item.getSqliteId(); // pass the sqlite Id to be used to identify the object
+                    Intent i = new Intent(context, WithdrawalRequestDetailActivity.class);
+                    i.putExtra("sqliteId", id);
+                    context.startActivity(i);
+
+                }
+            });
 
         }
 

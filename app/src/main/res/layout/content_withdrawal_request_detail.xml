@@ -54,7 +54,7 @@
                 android:id="@+id/beneficiary_phone_text"
                 android:text="778908987"
                 android:textColor="@color/purple_400"/>
-            <EditText
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -79,11 +79,7 @@
                     android:id="@+id/cancel_btn"
                     android:text="CANCEL"
                     android:textColor="@color/yellow_500"/>
-
             </LinearLayout>
-
-
-
 
         </LinearLayout>
 

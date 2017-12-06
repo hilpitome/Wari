@@ -45,7 +45,7 @@ public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequest
             holder.senderLastnameTv.setText(requestData.getSenderLastName());
             holder.senderFirstnameTv.setText(requestData.getSenderFirstname());
             holder.senderPhoneTv.setText(requestData.getSenderPhone());
-//            Log.e("phone", requestData.getSenderPhone());
+    //            Log.e("phone", requestData.getSenderPhone());
             holder.amountTv.setText(String.valueOf(requestData.getAmount()));
             holder.beneficiaryLastnameTv.setText(requestData.getBeneficiaryFirstname());
             holder.beneficiaryFirstnameTv.setText(requestData.getBeneficiaryLastname());
@@ -58,18 +58,17 @@ public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequest
 
             holder.statusTv.setText(requestData.getStatus());
 
-           holder.itemView.setOnClickListener(new View.OnClickListener() {
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
                    RequestData item = requestDataList.get(position);
                    int id = item.getSqliteId(); // pass the sqlite Id to be used to identify the object
-                   Bundle bundle = new Bundle();
                    Intent i = new Intent(context, TransferRequestDetailActivity.class);
                    i.putExtra("sqliteId", id);
                    context.startActivity(i);
 
                }
-           });
+            });
 
         }
 
