@@ -12,5 +12,6 @@
 
     <!--activity_upload_form.xml-->
     <dimen name="margin_bottom">10dp</dimen>
+    <dimen name="fab_margin">16dp</dimen>
 
 </resources>

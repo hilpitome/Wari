@@ -4,77 +4,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingBottom="8dp"
+    android:layout_marginLeft="12dp"
+    android:layout_marginStart="12dp"
+    android:layout_marginEnd="12dp"
+    android:layout_marginRight="12dp">
     <LinearLayout
         android:orientation="vertical" android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            android:weightSum="4">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/lastname_title"
-                android:textColor="@color/orange_400"
-                android:text="LASTNAME"
-                android:layout_marginRight="8dp"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/lastname_text"
+                android:textColor="@color/blue_400"
                 android:text="Toure"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            >
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/firstname_title"
-                android:textColor="@color/orange_400"
-                android:text="FIRSTNAME"
-                android:layout_marginRight="8dp"/>
-            <TextView
 
-                android:layout_width="wrap_content"
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/firstname_text"
-                android:text="456"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                android:textColor="@color/blue_400"
+                android:text="hisham"/>
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/phone_title"
-                android:textColor="@color/orange_400"
-                android:text="PHONE"
-                android:layout_marginRight="8dp"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/phone_text"
+                android:textColor="@color/blue_400"
                 android:text="0778XXXXXX"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp">
+
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/confirmation_title"
-                android:textColor="@color/orange_400"
-                android:text="CONFIRMATION"
-                android:layout_marginRight="8dp"/>
-            <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/confirmation_text"
+                android:textColor="@color/blue_400"
                 android:text="A543TY654"/>
         </LinearLayout>
         <include layout="@layout/item_divider"/>

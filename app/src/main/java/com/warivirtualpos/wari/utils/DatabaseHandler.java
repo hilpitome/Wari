@@ -93,14 +93,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(BENEFICIARY_PHONE, requestData.getBeneficiaryPhone());
         contentValues.put(AMOUNT,requestData.getAmount());
         contentValues.put(STATUS, requestData.getStatus());
-
+        contentValues.put(CONFIRMATION, requestData.getConfirmation());
         db.insert(TABLE_TRANSFER_REQUESTS , null, contentValues);
         db.close();
     }
     public List<RequestData> getRequestData(){
 
         List<RequestData> records = new ArrayList<>();
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM "+TABLE_TRANSFER_REQUESTS;
         Cursor cursor = db.rawQuery(query, null);
 
@@ -123,6 +123,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             requestData.setSqliteId(id);
             requestData.setConfirmation(confirmation);
             records.add(requestData);
+            System.out.println(confirmation);
         }
 
 
@@ -132,15 +133,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void addWithdrawalData(WithdrawalData withdrawalData){
+        Log.e("datachecker", withdrawalData.getLastname());
         SQLiteDatabase db = getWritableDatabase();
+
         ContentValues contentValues = new ContentValues();
         contentValues.put(DATE, withdrawalData.getDate());
         contentValues.put(WITHDRAWER_LAST_NAME, withdrawalData.getLastname());
         contentValues.put(WITHDRAWER_FIRST_NAME, withdrawalData.getFirstname());
         contentValues.put(WITHDARAWER_PHONE, withdrawalData.getPhone());
         contentValues.put(CONFIRMATION, withdrawalData.getConfirmation());
-
-
         db.insert(TABLE_WITHDRAWAL_REQUESTS , null, contentValues);
         db.close();
     }
@@ -159,7 +160,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String withdrawerFirstName = cursor.getString(cursor.getColumnIndex(WITHDRAWER_FIRST_NAME));
             String withdrawerPhone= cursor.getString(cursor.getColumnIndex(WITHDARAWER_PHONE));
             String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
-            records.add(new WithdrawalData(date, withdrawerLastName, withdrawerFirstName, withdrawerPhone, confirmation));
+            WithdrawalData withdrawalData =  new WithdrawalData(date, withdrawerLastName, withdrawerFirstName, withdrawerPhone, confirmation);
+            withdrawalData.setSqliteId(id);
+            records.add(withdrawalData);
         }
 
         db.close();
@@ -167,14 +170,47 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return  records;
     }
     public boolean updateTransferRequestConfirmation(int id, String confirmation){
-        String confi = "";
+
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(CONFIRMATION, confirmation);
         cv.put(STATUS, "OK");
         db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
+        Log.e("idConf", id+" "+confirmation);
         db.close();
         return true;
+
+    }
+
+    public RequestData getSingleRequestRecord(int Id){
+        SQLiteDatabase db = getReadableDatabase();
+        String selectQuery = "SELECT  * FROM " + TABLE_TRANSFER_REQUESTS + " WHERE "
+                + ID + " = " + Id;
+        Log.d("singleRequestData", selectQuery);
+
+        Cursor cursor = db.rawQuery(selectQuery, null);
+        if (cursor != null)
+            cursor.moveToFirst();
+
+
+        int id = cursor.getInt(cursor.getColumnIndex(ID));
+        String date =  cursor.getString(cursor.getColumnIndex(DATE));
+        String senderLastName = cursor.getString(cursor.getColumnIndex(SENDER_LAST_NAME));
+        String senderFirstName = cursor.getString(cursor.getColumnIndex(SENDER_FIRST_NAME));
+        String senderPhone = cursor.getString(cursor.getColumnIndex(SENDER_PHONE));
+        int amount  = cursor.getInt(cursor.getColumnIndex(AMOUNT));
+        String beneficiaryLastName = cursor.getString(cursor.getColumnIndex(BENEFICIARY_LAST_NAME));
+        String beneficiaryFirstName = cursor.getString(cursor.getColumnIndex(BENEFICIARY_FIRST_NAME));
+        String beneficiaryPhone = cursor.getString(cursor.getColumnIndex(BENEFICIARY_PHONE));
+        String status = cursor.getString(cursor.getColumnIndex(STATUS));
+        String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+        RequestData requestData= new RequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
+                beneficiaryPhone, status);
+        requestData.setSqliteId(id);
+        requestData.setConfirmation(confirmation);
+
+        return  requestData;
+
 
     }
 

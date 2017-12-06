@@ -1,5 +1,7 @@
 package com.warivirtualpos.wari.model;
 
+import android.util.Log;
+
 /**
  * Created by hilary on 11/26/17.
  */
@@ -10,7 +12,7 @@ public class WithdrawalData {
     public WithdrawalData(){
     }
     public WithdrawalData(String date, String lastname, String firstname, String phone, String confirmation){
-        this.sqliteId = sqliteId;
+
         this.date = date;
         this.lastname = lastname;
         this.firstname = firstname;

@@ -38,7 +38,7 @@ public class IncomingSms extends BroadcastReceiver {
     private static final String TAG = IncomingSms.class.getSimpleName();
 
     private String mUrl = "";
-//    private String mUrl = "http://192.168.1.4/index.php";
+
 
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     Context context;

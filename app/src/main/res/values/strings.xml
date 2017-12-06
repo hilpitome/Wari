@@ -8,4 +8,7 @@
     <string name="withdrawals_title">withdrawal requests</string>
     <string name="status">STATUS</string>
     <string name="pending">PENDING</string>
+    <string name="title_activity_transfer_request_detail">TransferRequestDetailActivity</string>
+    <string name="title_activity_withdrawal_request_detail">WithdrawalRequestDetailActivity</string>
+    <string name="no_sms">No sms records present at the moment</string>
 </resources>
