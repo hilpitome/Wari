@@ -1,7 +1,7 @@
 {
   "transfer_request_data": {
-    "sender_lastname": "Toure",
-    "sender_firstname": "Hisham",
+    "sender_lastname": "Molecule",
+    "sender_firstname": "One",
     "sender_phone": "0789087890",
     "amount": 900,
     "beneficiary_lastname": "egesa",
@@ -9,10 +9,11 @@
     "beneficiary_phone": "0728054248"
   },
   "withdrawal_request_data": {
-    "lastname": "Egesa",
-    "firstname": "Hilary",
+    "lastname": "Polycap",
+    "firstname": "Igathe",
     "phone": "0789087890",
     "date": "9/8/1980",
-    "confirm": "980-098-765"
+    "confirm": "980-098-765",
+    "status":"PENDING"
   }
 }

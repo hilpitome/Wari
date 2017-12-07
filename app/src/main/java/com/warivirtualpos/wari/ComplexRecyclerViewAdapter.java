@@ -88,6 +88,7 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         vh2.getFirstnameTv().setText(withdrawalData.getFirstname());
         vh2.getPhoneTv().setText(withdrawalData.getPhone());
         vh2.getConfirmationTv().setText(withdrawalData.getConfirmation());
+        vh2.getStatusTv().setText(withdrawalData.getStatus());
         vh2.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -116,7 +117,6 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         vh1.getStatusTv().setText(requestData.getStatus());
-
         vh1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

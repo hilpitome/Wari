@@ -9,13 +9,14 @@ import android.widget.TextView;
  */
 
 public class WithdrawalDataViewHolder extends RecyclerView.ViewHolder {
-    private TextView lastnameTv, firstnameTv, phoneTv, confirmationTv;
+    private TextView lastnameTv, firstnameTv, phoneTv, confirmationTv, statusTv;
     public WithdrawalDataViewHolder(View view) {
         super(view);
         lastnameTv = (TextView) view.findViewById(R.id.lastname_text);
         firstnameTv = (TextView) view.findViewById(R.id.firstname_text);
         phoneTv = (TextView) view.findViewById(R.id.phone_text);
         confirmationTv = (TextView) view.findViewById(R.id.confirmation_text);
+        statusTv = (TextView) view.findViewById(R.id.validation_txt);
     }
 
     public TextView getLastnameTv() {
@@ -48,5 +49,13 @@ public class WithdrawalDataViewHolder extends RecyclerView.ViewHolder {
 
     public void setConfirmationTv(TextView confirmationTv) {
         this.confirmationTv = confirmationTv;
+    }
+
+    public TextView getStatusTv() {
+        return statusTv;
+    }
+
+    public void setStatusTv(TextView statusTv) {
+        this.statusTv = statusTv;
     }
 }

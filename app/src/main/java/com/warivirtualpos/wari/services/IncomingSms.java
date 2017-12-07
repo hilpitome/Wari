@@ -112,7 +112,7 @@ public class IncomingSms extends BroadcastReceiver {
                         confirmation = withdrawalMsgArr[4];
 
                         WithdrawalData withdrawalData = new WithdrawalData(now, lastname, firstname, phone, confirmation);
-
+                        withdrawalData.setStatus("PENDING");
 
                         databaseHandler.addWithdrawalData(withdrawalData);
                         SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();

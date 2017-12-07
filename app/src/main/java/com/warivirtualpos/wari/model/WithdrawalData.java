@@ -7,7 +7,7 @@ import android.util.Log;
  */
 
 public class WithdrawalData {
-    String date, lastname, firstname, phone, confirmation;
+    String date, lastname, firstname, phone, confirmation, status;
     int sqliteId;
     public WithdrawalData(){
     }
@@ -67,5 +67,13 @@ public class WithdrawalData {
 
     public void setConfirmation(String confirmation) {
         this.confirmation = confirmation;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -141,6 +141,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(WITHDRAWER_FIRST_NAME, withdrawalData.getFirstname());
         contentValues.put(WITHDARAWER_PHONE, withdrawalData.getPhone());
         contentValues.put(CONFIRMATION, withdrawalData.getConfirmation());
+        contentValues.put(STATUS, withdrawalData.getStatus());
         db.insert(TABLE_WITHDRAWAL_REQUESTS , null, contentValues);
         db.close();
     }
@@ -159,8 +160,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String withdrawerFirstName = cursor.getString(cursor.getColumnIndex(WITHDRAWER_FIRST_NAME));
             String withdrawerPhone= cursor.getString(cursor.getColumnIndex(WITHDARAWER_PHONE));
             String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+            String status = cursor.getString(cursor.getColumnIndex(STATUS));
             WithdrawalData withdrawalData =  new WithdrawalData(date, withdrawerLastName, withdrawerFirstName, withdrawerPhone, confirmation);
             withdrawalData.setSqliteId(id);
+            withdrawalData.setStatus(status);
             records.add(withdrawalData);
         }
 
@@ -179,13 +182,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return true;
 
     }
-    public boolean updateWithdrawalConfirmation(int id, String confirmation){
+    public boolean updateWithdrawalConfirmation(int id){
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
-        cv.put(CONFIRMATION, confirmation);
         cv.put(STATUS, "OK");
-        db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
+        db.update(TABLE_WITHDRAWAL_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
         db.close();
         return true;
 

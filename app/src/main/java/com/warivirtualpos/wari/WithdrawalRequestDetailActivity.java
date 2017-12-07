@@ -71,7 +71,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
                 SmsManager smsManager = SmsManager.getDefault();
 //                smsManager.sendTextMessage("agentPhone", null, "sms message", null, null);
                 String confirmString = confirmationTv.getText().toString().trim();
-                Log.e("string", confirmString);
+                databaseHandler.updateWithdrawalConfirmation(sqliteId);
                 Toast.makeText(this, "validation sent to  agent", Toast.LENGTH_SHORT).show();
 
                 break;
