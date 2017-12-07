@@ -8,10 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.warivirtualpos.wari.model.MainObject;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -20,7 +23,7 @@ import java.util.List;
 
 public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
     // The items to display in your RecyclerView
-    private List<Object> items =  new ArrayList<>();
+    private List<MainObject> items =  new ArrayList<>();
     private Context context;
 
     private final int REQUEST = 0, WITHDRAWAL = 1;
@@ -30,8 +33,16 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         this.context = context;
         
     }
-    public void setItemList(List<Object> items){
+    public void setItemList(List<MainObject> items){
         this.items.clear();
+        if (items.size() > 0) {
+            Collections.sort(items, new Comparator<MainObject>() {
+                @Override
+                public int compare(final MainObject object1, final MainObject object2) {
+                    return object1.getDate().compareTo(object2.getDate());
+                }
+            });
+        }
         this.items.addAll(items);
         this.notifyDataSetChanged();
     }

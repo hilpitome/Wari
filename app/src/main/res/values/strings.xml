@@ -11,4 +11,15 @@
     <string name="title_activity_transfer_request_detail">TransferRequestDetailActivity</string>
     <string name="title_activity_withdrawal_request_detail">WithdrawalRequestDetailActivity</string>
     <string name="no_sms">No sms records present at the moment</string>
+    <string name="status_title">STATUS</string>
+    <string name="montant_title">MONTANT</string>
+    <string name="phone_title">PHONE</string>
+    <string name="prenom_title">PRENOM</string>
+    <string name="nom_title">NOM</string>
+    <string name="envoyeur_title">Envoyeur</string>
+    <string name="b_n_ficiaire">Bénéficiaire</string>
+    <string name="nom">NOM</string>
+    <string name="prenom">PRENOM</string>
+    <string name="phone">PHONE</string>
+    <string name="confirmation">CONFIRMATION</string>
 </resources>

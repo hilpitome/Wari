@@ -21,6 +21,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.warivirtualpos.wari.model.MainObject;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
@@ -30,7 +31,10 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 
@@ -40,12 +44,13 @@ public class MainActivity extends AppCompatActivity {
 
     DatabaseHandler databaseHandler;
     RecyclerView recyclerView;
-    List<Object> items = new ArrayList<>();
+    List<MainObject> items = new ArrayList<>();
     List<RequestData> requestDataList = new ArrayList<>();
     List<WithdrawalData> withdrawalDataList = new ArrayList<>();
     ComplexRecyclerViewAdapter complexRecyclerViewAdapter;
     TextView noTextsTv;
     SwipeRefreshLayout swipeRefreshLayout;
+    private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -54,66 +59,68 @@ public class MainActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         databaseHandler = new DatabaseHandler(this);
-
-        Resources resources = getResources();
-
-        InputStream inputStream = resources.openRawResource(R.raw.example_objects);
-
-        try {
-            int size = inputStream.available();
-            byte[] buffer = new byte[size];
-            inputStream.read(buffer);
-            inputStream.close();
-            String json = new String(buffer,"UTF-8");
-
-            JSONObject withdarawalDataString = new JSONObject(json);
-            JSONObject requestdataString = new JSONObject(json);
-            // create transfer request
-            JSONObject transferRequestData = requestdataString.getJSONObject("transfer_request_data");
-            String sender_lastname = transferRequestData.getString("sender_lastname");
-            String sender_firstname = transferRequestData.getString("sender_firstname");
-            String sender_phone = transferRequestData.getString("sender_phone");
-            String amount = transferRequestData.getString("amount");
-            String beneficiary_lastname = transferRequestData.getString("beneficiary_lastname");
-            String beneficiary_firstname = transferRequestData.getString("beneficiary_firstname");
-            String beneficiary_phone = transferRequestData.getString("beneficiary_phone");
-            RequestData requestData = new RequestData();
-            requestData.setSenderLastName(sender_lastname);
-            requestData.setSenderFirstname(sender_firstname);
-            requestData.setSenderPhone(sender_phone);
-            requestData.setAmount(Integer.valueOf(amount));
-            requestData.setBeneficiaryLastname(beneficiary_lastname);
-            requestData.setBeneficiaryPhone(beneficiary_phone);
-            requestData.setBeneficiaryFirstname(beneficiary_firstname);
-            requestData.setStatus("PENDING");
-            requestData.setConfirmation("987-098-987");
-
-            databaseHandler.addRequestData(requestData);
-
-            // create withdrawal data
-            JSONObject withDrawalData = withdarawalDataString.getJSONObject("withdrawal_request_data");
-            String lastname = withDrawalData.getString("lastname");
-            String firstname = withDrawalData.getString("firstname");
-            String date = withDrawalData.getString("date");
-            String confirmation = withDrawalData.getString("confirm");
-            String phone = withDrawalData.getString("phone");
-            String status = withDrawalData.getString("status");
-            Log.e("stat", status);
-            WithdrawalData data = new WithdrawalData();
-            data.setDate(date);
-            data.setLastname(lastname);
-            data.setFirstname(firstname);
-            data.setConfirmation(confirmation);
-            data.setPhone(phone);
-            data.setStatus(status);
-
-            databaseHandler.addWithdrawalData(data);
-
-
-        } catch (IOException | JSONException e) {
-            e.printStackTrace();
-        }
-
+//        Date date = new Date();
+//        String now = sdf.format(date);
+//
+//        Resources resources = getResources();
+//
+//        InputStream inputStream = resources.openRawResource(R.raw.example_objects);
+//
+//        try {
+//            int size = inputStream.available();
+//            byte[] buffer = new byte[size];
+//            inputStream.read(buffer);
+//            inputStream.close();
+//            String json = new String(buffer,"UTF-8");
+//
+//            JSONObject withdarawalDataString = new JSONObject(json);
+//            JSONObject requestdataString = new JSONObject(json);
+//            // create transfer request
+//            JSONObject transferRequestData = requestdataString.getJSONObject("transfer_request_data");
+//            String sender_lastname = transferRequestData.getString("sender_lastname");
+//            String sender_firstname = transferRequestData.getString("sender_firstname");
+//            String sender_phone = transferRequestData.getString("sender_phone");
+//            String amount = transferRequestData.getString("amount");
+//            String beneficiary_lastname = transferRequestData.getString("beneficiary_lastname");
+//            String beneficiary_firstname = transferRequestData.getString("beneficiary_firstname");
+//            String beneficiary_phone = transferRequestData.getString("beneficiary_phone");
+//            RequestData requestData = new RequestData();
+//            requestData.setSenderLastName(sender_lastname);
+//            requestData.setSenderFirstname(sender_firstname);
+//            requestData.setSenderPhone(sender_phone);
+//            requestData.setAmount(Integer.valueOf(amount));
+//            requestData.setBeneficiaryLastname(beneficiary_lastname);
+//            requestData.setBeneficiaryPhone(beneficiary_phone);
+//            requestData.setBeneficiaryFirstname(beneficiary_firstname);
+//            requestData.setStatus("PENDING");
+//            requestData.setConfirmation("987-098-987");
+//            requestData.setDate(now);
+//
+//            databaseHandler.addRequestData(requestData);
+//
+//            // create withdrawal data
+//            JSONObject withDrawalData = withdarawalDataString.getJSONObject("withdrawal_request_data");
+//            String lastname = withDrawalData.getString("lastname");
+//            String firstname = withDrawalData.getString("firstname");
+////            String date = withDrawalData.getString("date");
+//            String confirmation = withDrawalData.getString("confirm");
+//            String phone = withDrawalData.getString("phone");
+//            String status = withDrawalData.getString("status");
+//            Log.e("stat", status);
+//            WithdrawalData data = new WithdrawalData();
+//            data.setDate(now);
+//            data.setLastname(lastname);
+//            data.setFirstname(firstname);
+//            data.setConfirmation(confirmation);
+//            data.setPhone(phone);
+//            data.setStatus(status);
+//
+//            databaseHandler.addWithdrawalData(data);
+//
+//
+//        } catch (IOException | JSONException e) {
+//            e.printStackTrace();
+//        }
 
         noTextsTv = (TextView) findViewById(R.id.no_sms_tv);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);

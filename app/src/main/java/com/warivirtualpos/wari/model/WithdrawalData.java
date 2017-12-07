@@ -6,7 +6,8 @@ import android.util.Log;
  * Created by hilary on 11/26/17.
  */
 
-public class WithdrawalData {
+public class WithdrawalData extends MainObject{
+
     String date, lastname, firstname, phone, confirmation, status;
     int sqliteId;
     public WithdrawalData(){
@@ -28,7 +29,7 @@ public class WithdrawalData {
     public void setSqliteId(int sqliteId) {
         this.sqliteId = sqliteId;
     }
-
+    @Override
     public String getDate() {
         return date;
     }

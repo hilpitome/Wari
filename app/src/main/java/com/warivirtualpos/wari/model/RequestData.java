@@ -4,7 +4,7 @@ package com.warivirtualpos.wari.model;
  * Created by hilary on 11/26/17.
  */
 
-public class RequestData {
+public class RequestData extends MainObject{
     private String date, senderLastName, senderFirstname, senderPhone, beneficiaryLastname,
             beneficiaryFirstname, beneficiaryPhone, status, confirmation;
     int amount, sqliteId;
@@ -30,7 +30,7 @@ public class RequestData {
     public void setSqliteId(int sqliteId) {
         this.sqliteId = sqliteId;
     }
-
+    @Override
     public String getDate() {
         return date;
     }
