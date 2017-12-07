@@ -133,7 +133,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void addWithdrawalData(WithdrawalData withdrawalData){
-        Log.e("datachecker", withdrawalData.getLastname());
+
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -176,7 +176,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(CONFIRMATION, confirmation);
         cv.put(STATUS, "OK");
         db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
-        Log.e("idConf", id+" "+confirmation);
         db.close();
         return true;
 
@@ -186,8 +185,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_TRANSFER_REQUESTS + " WHERE "
                 + ID + " = " + Id;
-        Log.d("singleRequestData", selectQuery);
-
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null)
             cursor.moveToFirst();

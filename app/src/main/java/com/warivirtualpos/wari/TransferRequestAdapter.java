@@ -2,17 +2,12 @@ package com.warivirtualpos.wari;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import com.warivirtualpos.wari.model.RequestData;
-import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 
 import java.util.List;
@@ -35,7 +30,7 @@ public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequest
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View itemView = LayoutInflater.from(parent.getContext())
-            .inflate(R.layout.request_item_row, parent, false);
+            .inflate(R.layout.transfer_request_item_row, parent, false);
             return new MyViewHolder(itemView);
         }
 
