@@ -43,7 +43,6 @@
                     android:id="@+id/amount_text"
                     android:text="543"
                     android:textColor="@color/blue_400"/>
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -71,8 +70,6 @@
                     android:layout_weight="1"
                     android:layout_marginTop="4dp"
                     android:layout_marginBottom="4dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_marginEnd="4dp"
                     android:id="@+id/confirmation_text"
                     android:text="711-524-098-876"
                     android:textColor="@color/blue_400"
@@ -84,9 +81,6 @@
                     android:id="@+id/status_text"
                     android:text="OK"
                     android:textColor="@color/blue_400"/>
-
-
-
         </LinearLayout>
         <include layout="@layout/item_divider"/>
     </LinearLayout>

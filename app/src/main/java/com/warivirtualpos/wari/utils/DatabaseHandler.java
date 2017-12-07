@@ -20,7 +20,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
@@ -62,7 +62,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," + DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
-                +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT"+")";
+                +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_WITHDRAWAL_REQUESTS);
 
@@ -123,7 +123,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             requestData.setSqliteId(id);
             requestData.setConfirmation(confirmation);
             records.add(requestData);
-            System.out.println(confirmation);
+
         }
 
 
@@ -135,7 +135,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public void addWithdrawalData(WithdrawalData withdrawalData){
 
         SQLiteDatabase db = getWritableDatabase();
-
         ContentValues contentValues = new ContentValues();
         contentValues.put(DATE, withdrawalData.getDate());
         contentValues.put(WITHDRAWER_LAST_NAME, withdrawalData.getLastname());
@@ -180,6 +179,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         return true;
 
     }
+    public boolean updateWithdrawalConfirmation(int id, String confirmation){
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(CONFIRMATION, confirmation);
+        cv.put(STATUS, "OK");
+        db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
+        db.close();
+        return true;
+
+    }
+
 
     public RequestData getSingleRequestRecord(int Id){
         SQLiteDatabase db = getReadableDatabase();

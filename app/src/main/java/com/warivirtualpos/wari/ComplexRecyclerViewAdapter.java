@@ -33,7 +33,6 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     public void setItemList(List<Object> items){
         this.items.clear();
         this.items.addAll(items);
-        Log.e("lydia", String.valueOf(items.size()));
         this.notifyDataSetChanged();
     }
     @Override

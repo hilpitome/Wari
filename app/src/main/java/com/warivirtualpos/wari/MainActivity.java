@@ -90,10 +90,8 @@ public class MainActivity extends AppCompatActivity {
 
         if(items.size()>0){
             noTextsTv.setVisibility(View.GONE);
-//            recyclerView.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.VISIBLE);
             complexRecyclerViewAdapter.setItemList(items);
-
-
             swipeRefreshLayout.setEnabled(true);
         } if (swipeRefreshLayout.isRefreshing()) {
             swipeRefreshLayout.setRefreshing(false);
