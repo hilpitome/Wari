@@ -36,7 +36,7 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_transfer_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("TransferRequest Detail Version 1");
+        getSupportActionBar().setTitle("TransferRequest Detail Version 3");
         Bundle bundle = getIntent().getExtras();
         sqliteId = bundle.getInt("sqliteId");
         databaseHandler = new DatabaseHandler(this);

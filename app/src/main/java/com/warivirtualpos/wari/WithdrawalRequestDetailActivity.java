@@ -31,7 +31,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_withdrawal_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Withdrawal Detail Version 1");
+        getSupportActionBar().setTitle("Withdrawal Detail Version 3");
         Bundle bundle = getIntent().getExtras();
         sqliteId = bundle.getInt("sqliteId");
         databaseHandler = new DatabaseHandler(this);

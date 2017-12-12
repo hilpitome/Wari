@@ -6,7 +6,7 @@ package com.warivirtualpos.wari.model;
 
 public class RequestData extends MainObject{
     private String date, senderLastName, senderFirstname, senderPhone, beneficiaryLastname,
-            beneficiaryFirstname, beneficiaryPhone, status, confirmation;
+            beneficiaryFirstname, beneficiaryPhone, status, confirmation ="";
     int amount, sqliteId;
     public RequestData(){}
     public RequestData(String date, String senderLastName, String senderFirstname, String senderPhone, int amount, String beneficiaryLastname,
