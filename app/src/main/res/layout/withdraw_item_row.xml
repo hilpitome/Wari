@@ -18,29 +18,29 @@
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_400"/>
+                android:textColor="@color/yellow_500"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_400"/>
+                android:textColor="@color/yellow_500"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_400"/>
+                android:textColor="@color/yellow_500"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:textColor="@color/blue_400"/>
+                android:textColor="@color/yellow_500"/>
 
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/lastname_text"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/yellow_500"
                 android:text="Toure"/>
 
             <TextView
@@ -48,7 +48,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/firstname_text"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/yellow_500"
                 android:text="hisham"/>
 
             <TextView
@@ -56,7 +56,7 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/phone_text"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/yellow_500"
                 android:text="0778XXXXXX"/>
 
             <TextView
@@ -64,14 +64,14 @@
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/confirmation_text"
-                android:textColor="@color/blue_400"
+                android:textColor="@color/yellow_500"
                 android:text="A543TY654"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content"
                 android:id="@+id/validation_txt"
-                android:textColor="@color/blue_400"/>
+                android:textColor="@color/yellow_500"/>
         </LinearLayout>
         <include layout="@layout/item_divider"/>
     </LinearLayout>

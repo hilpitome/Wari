@@ -1,9 +1,12 @@
 package com.warivirtualpos.wari;
 
+import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -80,20 +83,21 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-
+        String confirmString = confirmationEt.getText().toString().trim();
         switch (id){
             case R.id.ok_btn:
-                String confirmString = confirmationEt.getText().toString().trim();
-                if(databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString)) {
-                    Toast.makeText(this, "confirmation added", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(this, "no change", Toast.LENGTH_SHORT).show();
-                }
 
+                if(confirmString.length()<1){
+                    confirmString = "";
+                }
+                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString);
+                   startActivity(new Intent(TransferRequestDetailActivity.this, MainActivity.class));
                 break;
             case  R.id.cancel_btn:
-                // do nothing
-                Toast.makeText(this, "Nothing to confirm", Toast.LENGTH_SHORT).show();
+                if(confirmString.length()>0 && !confirmString.equals(requestData.getConfirmation())){
+                    DialogFragment cancelConfirmationDialog = CancelConfirmationDialog.newInstance();
+                    cancelConfirmationDialog.show(getFragmentManager(), "dialogue");
+                }
                 break;
             default:
                 break;

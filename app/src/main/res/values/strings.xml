@@ -22,4 +22,6 @@
     <string name="prenom">PRENOM</string>
     <string name="phone">PHONE</string>
     <string name="confirmation">CONFIRMATION</string>
+    <string name="alert_dialog_ok">OK</string>
+    <string name="alert_dialog_cancel">CANCEL</string>
 </resources>

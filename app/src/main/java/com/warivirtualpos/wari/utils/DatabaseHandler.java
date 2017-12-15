@@ -171,7 +171,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return  records;
     }
-    public boolean updateTransferRequestConfirmation(int id, String confirmation){
+    public void updateTransferRequestConfirmation(int id, String confirmation){
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
@@ -179,8 +179,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(STATUS, "OK");
         db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
         db.close();
-        return true;
-
     }
     public boolean updateWithdrawalConfirmation(int id){
 
