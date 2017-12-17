@@ -31,6 +31,7 @@ import com.warivirtualpos.wari.model.MainObject;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
+import com.warivirtualpos.wari.utils.WariSecrets;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
     TextView noTextsTv;
     SwipeRefreshLayout swipeRefreshLayout;
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    private String agentsUrl = "http://www.caurix.net/Recharge/controller/DistributorTestController.php?cmd=getSubDistributorBalance";
+    private String agentsUrl = WariSecrets.agentsUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
