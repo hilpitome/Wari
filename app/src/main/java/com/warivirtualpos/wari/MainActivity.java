@@ -1,6 +1,7 @@
 package com.warivirtualpos.wari;
 
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,11 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.warivirtualpos.wari.model.Agent;
+import com.warivirtualpos.wari.model.AgentsResponse;
 import com.warivirtualpos.wari.model.MainObject;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
@@ -36,8 +42,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
-
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -51,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
     TextView noTextsTv;
     SwipeRefreshLayout swipeRefreshLayout;
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+    private String agentsUrl = "http://www.caurix.net/Recharge/controller/DistributorTestController.php?cmd=getSubDistributorBalance";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,6 +70,24 @@ public class MainActivity extends AppCompatActivity {
         final Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         databaseHandler = new DatabaseHandler(this);
+
+        List<Agent> agentList = databaseHandler.getAgentsData();
+
+        Log.e("agents", String.valueOf(agentList.size()));
+
+        if(agentList.size()<1){
+            // download from online database
+
+            AgentsTask agentsTask = new AgentsTask();
+            agentsTask.execute(agentsUrl);
+
+
+
+
+
+        }
+
+
 //        Date date = new Date();
 //        String now = sdf.format(date);
 //
@@ -168,7 +197,43 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    private class AgentsTask extends AsyncTask<String, String, String> {
 
+        @Override
+        protected String doInBackground(String... params) {
+            String resp = "";
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .connectTimeout(10, TimeUnit.SECONDS)
+                    .writeTimeout(10, TimeUnit.SECONDS)
+                    .readTimeout(30, TimeUnit.SECONDS)
+                    .build();
+
+            Request request = new Request.Builder()
+                    .url(agentsUrl)
+                    .build();
+            Response response = null;
+            try {
+                response= client.newCall(request).execute();
+                resp = response.body().string();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return  resp;
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            Gson gson = new GsonBuilder().create();
+            AgentsResponse agentsResponse = gson.fromJson(s, AgentsResponse.class);
+            if(agentsResponse.getStatus().equals("SUCCESS")){
+               for(Agent agent:agentsResponse.getResponseBody()){
+                   databaseHandler.addAgentDetails(agent);
+               }
+            }
+
+        }
+    }
 
 
 }

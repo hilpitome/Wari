@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.model.RequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 
@@ -20,18 +21,20 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
     // table names
     private static final String TABLE_TRANSFER_REQUESTS = "transfer_requests";
     private static final String TABLE_WITHDRAWAL_REQUESTS = "withdrawal_requests";
+    private static final String TABLE_VIRTUAL_AGENTS = "virtual_agents";
 
     // Common Table Columns names
     private static final String ID = "_id";
     private static final String DATE = "date";
     private static final String CONFIRMATION = "confirmation";
+    private static final String AGENT_NUMBER ="agent_number";
 
     // transfer_requests column names
     private static final String SENDER_LAST_NAME = "sender_last_name";
@@ -47,6 +50,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String WITHDRAWER_FIRST_NAME = "first_name";
     private static final String WITHDARAWER_PHONE = "withdrawer_phone";
 
+    // virtual agents column names
+
+    private static final String AGENT_BALANCE = "agent_balance";
+
 
     public DatabaseHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,15 +63,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_TABLE_TRANSFER_REQUESTS = "CREATE TABLE " + TABLE_TRANSFER_REQUESTS  + "("
-                + ID + " INTEGER PRIMARY KEY," + DATE + " TEXT,"+ SENDER_LAST_NAME + " TEXT,"
+                + ID + " INTEGER PRIMARY KEY," + AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ DATE + " TEXT,"+ SENDER_LAST_NAME + " TEXT,"
                 + SENDER_FIRST_NAME  + " TEXT," + SENDER_PHONE + " TEXT," + AMOUNT+ " INTEGER," + BENEFICIARY_LAST_NAME+ " TEXT,"+
                 BENEFICIARY_FIRST_NAME+ " TEXT,"+BENEFICIARY_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
 
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
-                + ID + " INTEGER PRIMARY KEY," + DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
+                + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
                 +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
+        String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT ''"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_WITHDRAWAL_REQUESTS);
+        sqLiteDatabase.execSQL(CREATE_TABLE_VIRTUAL_AGENTS);
 
     }
 
@@ -73,6 +82,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         // Drop older table if existed
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TRANSFER_REQUESTS );
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_WITHDRAWAL_REQUESTS);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_VIRTUAL_AGENTS);
 
 
         // Create tables again
@@ -250,6 +260,40 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         return withdrawalData;
 
+    }
+
+    public List<Agent> getAgentsData(){
+
+        List<Agent> agentsList = new ArrayList<>();
+        SQLiteDatabase db = getReadableDatabase();
+        String query = "SELECT * FROM "+TABLE_VIRTUAL_AGENTS;
+        Cursor cursor = db.rawQuery(query, null);
+
+        while (cursor.moveToNext()) {
+            // Extract data.
+            int id = cursor.getInt(cursor.getColumnIndex(ID));
+            String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
+            String agentBalance = cursor.getString(cursor.getColumnIndex(AGENT_BALANCE));
+
+            Agent agent = new Agent(agentNumber, agentBalance);
+            agent.setSqliteId(id);
+
+            agentsList.add(agent);
+        }
+
+        return agentsList;
+
+    }
+    // add a new row
+    public void addAgentDetails(Agent agent){
+
+        SQLiteDatabase db = getWritableDatabase();
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(AGENT_NUMBER, agent.getSdNumber());
+        contentValues.put(AGENT_BALANCE, agent.getSdBalance());
+        db.insert(TABLE_VIRTUAL_AGENTS , null, contentValues);
+        db.close();
     }
 
 }
