@@ -1,5 +1,6 @@
 package com.warivirtualpos.wari;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 
@@ -72,7 +74,11 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
 //                smsManager.sendTextMessage("agentPhone", null, "sms message", null, null);
                 String confirmString = confirmationTv.getText().toString().trim();
                 databaseHandler.updateWithdrawalConfirmation(sqliteId);
-                Toast.makeText(this, "validation sent to  agent", Toast.LENGTH_SHORT).show();
+                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString);
+                Agent agent  = databaseHandler.checkIfAgent(withdrawalData.getAgentNumber());
+                int balance = Integer.valueOf(agent.getSdBalance()) - withdrawalData.getAmount();
+                databaseHandler.updateSqliteBalance(balance, withdrawalData.getAgentNumber());
+                startActivity(new Intent(WithdrawalRequestDetailActivity.this, MainActivity.class));
 
                 break;
             case  R.id.cancel_btn:

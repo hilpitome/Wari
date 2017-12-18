@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.warivirtualpos.wari.model.RequestData;
+import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 
 import java.util.List;
@@ -18,12 +18,12 @@ import java.util.List;
 
 public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequestAdapter.MyViewHolder>  {
 
-    private List<RequestData> requestDataList;
+    private List<TransferRequestData> transferRequestDataList;
     private DatabaseHandler databaseHandler;
     private Context context;
 
-        public TransferRequestAdapter(Context context, List<RequestData> requestDataList){
-            this.requestDataList = requestDataList;
+        public TransferRequestAdapter(Context context, List<TransferRequestData> transferRequestDataList){
+            this.transferRequestDataList = transferRequestDataList;
             this.context = context;
         }
 
@@ -36,27 +36,27 @@ public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequest
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, final int position) {
-            final RequestData requestData = requestDataList.get(position);
-            holder.senderLastnameTv.setText(requestData.getSenderLastName());
-            holder.senderFirstnameTv.setText(requestData.getSenderFirstname());
-            holder.senderPhoneTv.setText(requestData.getSenderPhone());
-    //            Log.e("phone", requestData.getSenderPhone());
-            holder.amountTv.setText(String.valueOf(requestData.getAmount()));
-            holder.beneficiaryLastnameTv.setText(requestData.getBeneficiaryFirstname());
-            holder.beneficiaryFirstnameTv.setText(requestData.getBeneficiaryLastname());
-            holder.beneficiaryPhoneTv.setText(requestData.getBeneficiaryPhone());
+            final TransferRequestData transferRequestData = transferRequestDataList.get(position);
+            holder.senderLastnameTv.setText(transferRequestData.getSenderLastName());
+            holder.senderFirstnameTv.setText(transferRequestData.getSenderFirstname());
+            holder.senderPhoneTv.setText(transferRequestData.getSenderPhone());
+    //            Log.e("phone", transferRequestData.getSenderPhone());
+            holder.amountTv.setText(String.valueOf(transferRequestData.getAmount()));
+            holder.beneficiaryLastnameTv.setText(transferRequestData.getBeneficiaryFirstname());
+            holder.beneficiaryFirstnameTv.setText(transferRequestData.getBeneficiaryLastname());
+            holder.beneficiaryPhoneTv.setText(transferRequestData.getBeneficiaryPhone());
 
-            if(requestData.getConfirmation().length()>0){
-                holder.confirmTv.setText(requestData.getConfirmation());
+            if(transferRequestData.getConfirmation().length()>0){
+                holder.confirmTv.setText(transferRequestData.getConfirmation());
                 holder.confirmTv.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
             }
 
-            holder.statusTv.setText(requestData.getStatus());
+            holder.statusTv.setText(transferRequestData.getStatus());
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                @Override
                public void onClick(View v) {
-                   RequestData item = requestDataList.get(position);
+                   TransferRequestData item = transferRequestDataList.get(position);
                    int id = item.getSqliteId(); // pass the sqlite Id to be used to identify the object
                    Intent i = new Intent(context, TransferRequestDetailActivity.class);
                    i.putExtra("sqliteId", id);
@@ -69,7 +69,7 @@ public class TransferRequestAdapter extends RecyclerView.Adapter<TransferRequest
 
         @Override
         public int getItemCount() {
-            return requestDataList.size();
+            return transferRequestDataList.size();
         }
         public class MyViewHolder extends RecyclerView.ViewHolder {
             public TextView senderLastnameTv, senderFirstnameTv, senderPhoneTv, amountTv,

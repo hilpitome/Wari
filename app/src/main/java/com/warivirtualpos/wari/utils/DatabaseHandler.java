@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.warivirtualpos.wari.model.Agent;
-import com.warivirtualpos.wari.model.RequestData;
+import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
@@ -35,6 +35,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String DATE = "date";
     private static final String CONFIRMATION = "confirmation";
     private static final String AGENT_NUMBER ="agent_number";
+    private static final String AGENT_NAME = "agent_name";
 
     // transfer_requests column names
     private static final String SENDER_LAST_NAME = "sender_last_name";
@@ -63,12 +64,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         String CREATE_TABLE_TRANSFER_REQUESTS = "CREATE TABLE " + TABLE_TRANSFER_REQUESTS  + "("
-                + ID + " INTEGER PRIMARY KEY," + AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ DATE + " TEXT,"+ SENDER_LAST_NAME + " TEXT,"
+                + ID + " INTEGER PRIMARY KEY," + AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ AGENT_NAME +" TEXT NOT NULL DEFAULT '',"+DATE + " TEXT,"+ SENDER_LAST_NAME + " TEXT,"
                 + SENDER_FIRST_NAME  + " TEXT," + SENDER_PHONE + " TEXT," + AMOUNT+ " INTEGER," + BENEFICIARY_LAST_NAME+ " TEXT,"+
                 BENEFICIARY_FIRST_NAME+ " TEXT,"+BENEFICIARY_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
 
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
-                + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
+                + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ AGENT_NAME +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
                 +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
         String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT ''"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
@@ -89,27 +90,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
     // add a new row
-    public void addRequestData(RequestData requestData){
+    public void addRequestData(TransferRequestData transferRequestData){
 
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DATE, requestData.getDate());
-        contentValues.put(SENDER_LAST_NAME, requestData.getSenderLastName());
-        contentValues.put(SENDER_FIRST_NAME, requestData.getSenderFirstname());
-        contentValues.put(SENDER_PHONE, requestData.getSenderPhone());
-        contentValues.put(BENEFICIARY_LAST_NAME, requestData.getBeneficiaryLastname());
-        contentValues.put(BENEFICIARY_FIRST_NAME, requestData.getBeneficiaryFirstname());
-        contentValues.put(BENEFICIARY_PHONE, requestData.getBeneficiaryPhone());
-        contentValues.put(AMOUNT,requestData.getAmount());
-        contentValues.put(STATUS, requestData.getStatus());
-        contentValues.put(CONFIRMATION, requestData.getConfirmation());
+        contentValues.put(DATE, transferRequestData.getDate());
+        contentValues.put(SENDER_LAST_NAME, transferRequestData.getSenderLastName());
+        contentValues.put(SENDER_FIRST_NAME, transferRequestData.getSenderFirstname());
+        contentValues.put(SENDER_PHONE, transferRequestData.getSenderPhone());
+        contentValues.put(BENEFICIARY_LAST_NAME, transferRequestData.getBeneficiaryLastname());
+        contentValues.put(BENEFICIARY_FIRST_NAME, transferRequestData.getBeneficiaryFirstname());
+        contentValues.put(BENEFICIARY_PHONE, transferRequestData.getBeneficiaryPhone());
+        contentValues.put(AMOUNT, transferRequestData.getAmount());
+        contentValues.put(STATUS, transferRequestData.getStatus());
+        contentValues.put(CONFIRMATION, transferRequestData.getConfirmation());
         db.insert(TABLE_TRANSFER_REQUESTS , null, contentValues);
         db.close();
     }
-    public List<RequestData> getRequestData(){
+    public List<TransferRequestData> getRequestData(){
 
-        List<RequestData> records = new ArrayList<>();
+        List<TransferRequestData> records = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
         String query = "SELECT * FROM "+TABLE_TRANSFER_REQUESTS;
         Cursor cursor = db.rawQuery(query, null);
@@ -128,11 +129,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String beneficiaryPhone = cursor.getString(cursor.getColumnIndex(BENEFICIARY_PHONE));
             String status = cursor.getString(cursor.getColumnIndex(STATUS));
             String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
-            RequestData requestData= new RequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
+            TransferRequestData transferRequestData = new TransferRequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
                     beneficiaryPhone, status);
-            requestData.setSqliteId(id);
-            requestData.setConfirmation(confirmation);
-            records.add(requestData);
+            transferRequestData.setSqliteId(id);
+            transferRequestData.setConfirmation(confirmation);
+            records.add(transferRequestData);
 
         }
 
@@ -202,14 +203,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
 
-    public RequestData getSingleRequestRecord(int Id){
+    public TransferRequestData getSingleRequestRecord(int Id){
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_TRANSFER_REQUESTS + " WHERE "
                 + ID + " = " + Id;
         Cursor cursor = db.rawQuery(selectQuery, null);
         if (cursor != null)
             cursor.moveToFirst();
-
 
         int id = cursor.getInt(cursor.getColumnIndex(ID));
         String date =  cursor.getString(cursor.getColumnIndex(DATE));
@@ -222,14 +222,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String beneficiaryPhone = cursor.getString(cursor.getColumnIndex(BENEFICIARY_PHONE));
         String status = cursor.getString(cursor.getColumnIndex(STATUS));
         String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
-        RequestData requestData= new RequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
+        TransferRequestData transferRequestData = new TransferRequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
                 beneficiaryPhone, status);
-        requestData.setSqliteId(id);
-        requestData.setConfirmation(confirmation);
+        transferRequestData.setSqliteId(id);
+        transferRequestData.setConfirmation(confirmation);
 
         db.close();
 
-        return  requestData;
+        return transferRequestData;
 
     }
     public WithdrawalData getSingleWithdrawalRecord(int id){
@@ -277,7 +277,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             Agent agent = new Agent(agentNumber, agentBalance);
             agent.setSqliteId(id);
-
             agentsList.add(agent);
         }
 
@@ -294,6 +293,35 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(AGENT_BALANCE, agent.getSdBalance());
         db.insert(TABLE_VIRTUAL_AGENTS , null, contentValues);
         db.close();
+    }
+
+    public Agent checkIfAgent(String phoneNumber) {
+        SQLiteDatabase sqliteDatabase = getReadableDatabase();
+        Agent agent=null;
+        String query = "SELECT * FROM "+TABLE_VIRTUAL_AGENTS+" WHERE "+AGENT_NUMBER+" = " + phoneNumber;
+        Cursor  cursor = sqliteDatabase.rawQuery(query,null);
+
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            agent = new Agent();
+            agent.setSdNumber(cursor.getString(cursor.getColumnIndex(AGENT_NUMBER)));
+            agent.setSdNumber(cursor.getString(cursor.getColumnIndex(AGENT_BALANCE)));
+        }
+
+
+        sqliteDatabase.close();
+
+        return agent;
+
+    }
+
+    public void updateSqliteBalance(int amount, String agentNumber) {
+        SQLiteDatabase sqliteDatabase = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(AGENT_BALANCE, amount);
+        sqliteDatabase.update(TABLE_VIRTUAL_AGENTS, cv,AGENT_NUMBER+" = ?" ,new String[]{agentNumber});
+        sqliteDatabase.close();
     }
 
 }

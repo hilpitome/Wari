@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.warivirtualpos.wari.model.MainObject;
-import com.warivirtualpos.wari.model.RequestData;
+import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
     @Override
     public int getItemViewType(int position) {
-        if (items.get(position) instanceof RequestData) {
+        if (items.get(position) instanceof TransferRequestData) {
             return REQUEST;
         } else if (items.get(position) instanceof WithdrawalData) {
             return WITHDRAWAL;
@@ -95,6 +95,7 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
 
     private void configureViewHolder2(WithdrawalDataViewHolder vh2, final int position) {
         final WithdrawalData withdrawalData = (WithdrawalData) items.get(position);
+        vh2.getAgentNumberTv().setText(withdrawalData.getAgentNumber());
         vh2.getLastnameTv().setText(withdrawalData.getLastname());
         vh2.getFirstnameTv().setText(withdrawalData.getFirstname());
         vh2.getPhoneTv().setText(withdrawalData.getPhone());
@@ -114,24 +115,25 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void configureViewHolder1(RequestDataViewHolder vh1, final int position) {
-        final RequestData requestData = (RequestData) items.get(position);
-        vh1.getSenderLastnameTv().setText(requestData.getSenderLastName());
-        vh1.getSenderFirstnameTv().setText(requestData.getSenderFirstname());
-        vh1.getSenderPhoneTv().setText(requestData.getSenderPhone());
-        vh1.getAmountTv().setText(String.valueOf(requestData.getAmount()));
-        vh1.getBeneficiaryFirstnameTv().setText(requestData.getBeneficiaryFirstname());
-        vh1.getBeneficiaryLastnameTv().setText(requestData.getBeneficiaryLastname());
+        final TransferRequestData transferRequestData = (TransferRequestData) items.get(position);
+        vh1.getAgentNumberTv().setText(transferRequestData.getAgentNumber());
+        vh1.getSenderLastnameTv().setText(transferRequestData.getSenderLastName());
+        vh1.getSenderFirstnameTv().setText(transferRequestData.getSenderFirstname());
+        vh1.getSenderPhoneTv().setText(transferRequestData.getSenderPhone());
+        vh1.getAmountTv().setText(String.valueOf(transferRequestData.getAmount()));
+        vh1.getBeneficiaryFirstnameTv().setText(transferRequestData.getBeneficiaryFirstname());
+        vh1.getBeneficiaryLastnameTv().setText(transferRequestData.getBeneficiaryLastname());
 
-        if(requestData.getConfirmation().length()>0){
-            vh1.getConfirmTv().setText(requestData.getConfirmation());
+        if(transferRequestData.getConfirmation().length()>0){
+            vh1.getConfirmTv().setText(transferRequestData.getConfirmation());
             vh1.getConfirmTv().setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         }
 
-        vh1.getStatusTv().setText(requestData.getStatus());
+        vh1.getStatusTv().setText(transferRequestData.getStatus());
         vh1.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RequestData item = (RequestData) items.get(position);
+                TransferRequestData item = (TransferRequestData) items.get(position);
                 int id = item.getSqliteId(); // pass the sqlite Id to be used to identify the object
                 Intent i = new Intent(context, TransferRequestDetailActivity.class);
                 i.putExtra("sqliteId", id);

@@ -11,20 +11,17 @@ import android.util.Log;
 import android.widget.Toast;
 
 
-import com.warivirtualpos.wari.model.RequestData;
+import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 import com.warivirtualpos.wari.utils.WariSecrets;
 
-import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 
 
 /**
@@ -41,11 +38,10 @@ public class IncomingSms extends BroadcastReceiver {
 
 
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    Context context;
-    DatabaseHandler databaseHandler;
-
-
-
+    private  Context context;
+    private DatabaseHandler databaseHandler;
+    private static int WITHDRAWAL = 1;
+    private static int TRANSFER = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -53,6 +49,7 @@ public class IncomingSms extends BroadcastReceiver {
         this.context = context;
         Bundle bundle = intent.getExtras();
         mUrl = WariSecrets.mUrl;
+
 
         Log.e("mUrl", mUrl);
         if (bundle != null) {
@@ -70,53 +67,61 @@ public class IncomingSms extends BroadcastReceiver {
                     String message = currentSMS.getDisplayMessageBody();
 
                     if (message.toLowerCase().contains("envoi")) {
+                        // check if the sms is from a valid agent as per sqlite database
+                       if(checkPhoneNumber(senderNo)){
+                           String[] messageArray = message.split("\\#");
+                           String[] senderInfoArr = messageArray[0].split("\\*");
+                           String[] beneficiaryInfoArr = messageArray[1].split("\\*");
 
-                        String[] messageArray = message.split("\\#");
-                        String[] senderInfoArr = messageArray[0].split("\\*");
-                        String[] beneficiaryInfoArr = messageArray[1].split("\\*");
+                           String senderLastName = senderInfoArr[1];
+                           String senderFirstName = senderInfoArr[2];
+                           String senderPhoneNo = senderInfoArr[3];
+                           int amount = Integer.valueOf(senderInfoArr[4]);
 
-                        String senderLastName = senderInfoArr[1];
-                        String senderFirstName = senderInfoArr[2];
-                        String senderPhoneNo = senderInfoArr[3];
-                        int amount = Integer.valueOf(senderInfoArr[4]);
-
-                        String beneficiaryLastName = beneficiaryInfoArr[0];
-                        String beneficiaryFirstName = beneficiaryInfoArr[1];
-                        String beneficiaryPhone = beneficiaryInfoArr[2];
+                           String beneficiaryLastName = beneficiaryInfoArr[0];
+                           String beneficiaryFirstName = beneficiaryInfoArr[1];
+                           String beneficiaryPhone = beneficiaryInfoArr[2];
 
 
-                        RequestData requestData = new RequestData(
-                                now,
-                                senderLastName,
-                                senderFirstName,
-                                senderPhoneNo,
-                                amount,
-                                beneficiaryLastName,
-                                beneficiaryFirstName,
-                                beneficiaryPhone,
-                                "PENDING"
-                        );
+                           TransferRequestData transferRequestData = new TransferRequestData(
+                                   now,
+                                   senderLastName,
+                                   senderFirstName,
+                                   senderPhoneNo,
+                                   amount,
+                                   beneficiaryLastName,
+                                   beneficiaryFirstName,
+                                   beneficiaryPhone,
+                                   "PENDING"
+                           );
+                           transferRequestData.setAgentNumber(senderNo);
+                           databaseHandler.addRequestData(transferRequestData);
+                           SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
+                           sendToMySqlTask.execute(transferRequestData);
 
-                        databaseHandler.addRequestData(requestData);
-                        SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
-                        sendToMySqlTask.execute(requestData);
+                       }
 
 
                     } else if (message.toLowerCase().contains("retrait")) {
+                        // check if the sms is from a valid agent as per sqlite database
 
-                        String lastname, firstname, phone, confirmation;
-                        String[] withdrawalMsgArr = message.split("\\*");
-                        lastname = withdrawalMsgArr[1];
-                        firstname = withdrawalMsgArr[2];
-                        phone = withdrawalMsgArr[3];
-                        confirmation = withdrawalMsgArr[4];
+                        if(checkPhoneNumber(senderNo)){
+                            String lastname, firstname, phone, confirmation;
+                            String[] withdrawalMsgArr = message.split("\\*");
+                            lastname = withdrawalMsgArr[1];
+                            firstname = withdrawalMsgArr[2];
+                            phone = withdrawalMsgArr[3];
+                            confirmation = withdrawalMsgArr[4];
 
-                        WithdrawalData withdrawalData = new WithdrawalData(now, lastname, firstname, phone, confirmation);
-                        withdrawalData.setStatus("PENDING");
+                            WithdrawalData withdrawalData = new WithdrawalData(now, lastname, firstname, phone, confirmation);
+                            withdrawalData.setStatus("PENDING");
 
-                        databaseHandler.addWithdrawalData(withdrawalData);
-                        SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
-                        sendToMySqlTask.execute(withdrawalData);
+                            databaseHandler.addWithdrawalData(withdrawalData);
+                            SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
+                            sendToMySqlTask.execute(withdrawalData);
+                        }
+
+                        //
                     }
 
                 }
@@ -141,13 +146,16 @@ public class IncomingSms extends BroadcastReceiver {
 
     private class SendToMySqlTask extends AsyncTask<Object, String, String> {
 
+        // save things
+
+
         @Override
         protected String doInBackground(Object... params) {
             String resp ="";
             OkHttpClient client = new OkHttpClient();
             RequestBody formBody = null;
 
-            if(params[0] instanceof RequestData){
+            if(params[0] instanceof TransferRequestData){
 
 //                SmsData smsData = (SmsData) params[0];
 //                Log.e("Total_Caisse ", smsData.getTotalCaisse());
@@ -194,6 +202,14 @@ public class IncomingSms extends BroadcastReceiver {
             super.onPostExecute(s);
             Log.i(TAG, s);
             Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean checkPhoneNumber(String phoneNumber){
+        if(databaseHandler.checkIfAgent(phoneNumber)!=null){
+            return  true;
+        } else {
+            return false;
         }
     }
 

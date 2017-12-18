@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 
-import com.warivirtualpos.wari.model.RequestData;
+import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class TransferRequestsFragment extends Fragment {
     DatabaseHandler databaseHandler;
     TextView noTextsTv;
     RecyclerView recyclerView;
-    List<RequestData> records;
+    List<TransferRequestData> records;
     TransferRequestAdapter transferRequestAdapter;
 
 

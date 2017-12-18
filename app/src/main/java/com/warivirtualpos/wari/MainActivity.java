@@ -1,53 +1,35 @@
 package com.warivirtualpos.wari;
 
-import android.content.res.Resources;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telephony.SmsManager;
 import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.model.AgentsResponse;
 import com.warivirtualpos.wari.model.MainObject;
-import com.warivirtualpos.wari.model.RequestData;
+import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 import com.warivirtualpos.wari.utils.WariSecrets;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.RequestBody;
 import okhttp3.Response;
 
 
@@ -56,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHandler databaseHandler;
     RecyclerView recyclerView;
     List<MainObject> items = new ArrayList<>();
-    List<RequestData> requestDataList = new ArrayList<>();
+    List<TransferRequestData> transferRequestDataList = new ArrayList<>();
     List<WithdrawalData> withdrawalDataList = new ArrayList<>();
     ComplexRecyclerViewAdapter complexRecyclerViewAdapter;
     TextView noTextsTv;
@@ -72,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         databaseHandler = new DatabaseHandler(this);
 
+
+
         List<Agent> agentList = databaseHandler.getAgentsData();
 
         Log.e("agents", String.valueOf(agentList.size()));
@@ -81,10 +65,6 @@ public class MainActivity extends AppCompatActivity {
 
             AgentsTask agentsTask = new AgentsTask();
             agentsTask.execute(agentsUrl);
-
-
-
-
 
         }
 
@@ -114,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 //            String beneficiary_lastname = transferRequestData.getString("beneficiary_lastname");
 //            String beneficiary_firstname = transferRequestData.getString("beneficiary_firstname");
 //            String beneficiary_phone = transferRequestData.getString("beneficiary_phone");
-//            RequestData requestData = new RequestData();
+//            TransferRequestData requestData = new TransferRequestData();
 //            requestData.setSenderLastName(sender_lastname);
 //            requestData.setSenderFirstname(sender_firstname);
 //            requestData.setSenderPhone(sender_phone);
@@ -176,14 +156,15 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         complexRecyclerViewAdapter = new ComplexRecyclerViewAdapter(this);
+
         recyclerView.setAdapter(complexRecyclerViewAdapter);
     }
     private void setItemList() {
-        requestDataList = databaseHandler.getRequestData();
+        transferRequestDataList = databaseHandler.getRequestData();
         withdrawalDataList = databaseHandler.getWithdrawalData();
         this.items.clear();
-        for (RequestData requestData : requestDataList) {
-            items.add(requestData);
+        for (TransferRequestData transferRequestData : transferRequestDataList) {
+            items.add(transferRequestData);
         }
         for (WithdrawalData withdrawalData : withdrawalDataList) {
             items.add(withdrawalData);

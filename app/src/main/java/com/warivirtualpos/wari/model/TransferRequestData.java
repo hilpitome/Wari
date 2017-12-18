@@ -4,13 +4,13 @@ package com.warivirtualpos.wari.model;
  * Created by hilary on 11/26/17.
  */
 
-public class RequestData extends MainObject{
-    private String date, senderLastName, senderFirstname, senderPhone, beneficiaryLastname,
+public class TransferRequestData extends MainObject{
+    private String agentNumber,agentName, date, senderLastName, senderFirstname, senderPhone, beneficiaryLastname,
             beneficiaryFirstname, beneficiaryPhone, status, confirmation ="";
-    int amount, sqliteId;
-    public RequestData(){}
-    public RequestData(String date, String senderLastName, String senderFirstname, String senderPhone, int amount, String beneficiaryLastname,
-                        String beneficiaryFirstname, String beneficiaryPhone, String status){
+    private int amount, sqliteId;
+    public TransferRequestData(){}
+    public TransferRequestData(String date, String senderLastName, String senderFirstname, String senderPhone, int amount, String beneficiaryLastname,
+                               String beneficiaryFirstname, String beneficiaryPhone, String status){
         this.date = date;
         this.senderLastName = senderLastName;
         this.senderFirstname = senderFirstname;
@@ -109,5 +109,21 @@ public class RequestData extends MainObject{
 
     public void setConfirmation(String confirmation) {
         this.confirmation = confirmation;
+    }
+
+    public String getAgentNumber() {
+        return agentNumber;
+    }
+
+    public void setAgentNumber(String agentNumber) {
+        this.agentNumber = agentNumber;
+    }
+
+    public String getAgentName() {
+        return agentName;
+    }
+
+    public void setAgentName(String agentName) {
+        this.agentName = agentName;
     }
 }

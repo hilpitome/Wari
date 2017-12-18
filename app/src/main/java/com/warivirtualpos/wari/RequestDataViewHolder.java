@@ -9,11 +9,12 @@ import android.widget.TextView;
  */
 
 public class RequestDataViewHolder extends RecyclerView.ViewHolder {
-    private TextView senderLastnameTv, senderFirstnameTv, senderPhoneTv, amountTv,
+    private TextView agentNumberTv, senderLastnameTv, senderFirstnameTv, senderPhoneTv, amountTv,
             beneficiaryLastnameTv, beneficiaryFirstnameTv, beneficiaryPhoneTv, statusTv,
             confirmTv;
     public RequestDataViewHolder(View view) {
         super(view);
+        agentNumberTv = (TextView) view.findViewById(R.id.agent_number_text);
         senderLastnameTv = (TextView) view.findViewById(R.id.sender_lastname_text);
         senderFirstnameTv = (TextView) view.findViewById(R.id.sender_firstname_text);
         senderPhoneTv = (TextView) view.findViewById(R.id.sender_phone_text);
@@ -95,5 +96,13 @@ public class RequestDataViewHolder extends RecyclerView.ViewHolder {
 
     public void setConfirmTv(TextView confirmTv) {
         this.confirmTv = confirmTv;
+    }
+
+    public TextView getAgentNumberTv() {
+        return agentNumberTv;
+    }
+
+    public void setAgentNumberTv(TextView agentNumberTv) {
+        this.agentNumberTv = agentNumberTv;
     }
 }

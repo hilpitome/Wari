@@ -14,6 +14,10 @@ public class Agent {
     @SerializedName("sd_number")
     private String sdNumber;
 
+    public Agent() {
+
+    }
+
     public Agent(String sdNumber, String sdBalance) {
         this.sdBalance = sdBalance;
         this.sdNumber = sdNumber;

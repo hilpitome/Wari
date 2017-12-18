@@ -24,4 +24,6 @@
     <string name="confirmation">CONFIRMATION</string>
     <string name="alert_dialog_ok">OK</string>
     <string name="alert_dialog_cancel">CANCEL</string>
+    <string name="agent_details">Agent Details</string>
+    <string name="agent_number">Agent Number</string>
 </resources>
