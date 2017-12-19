@@ -21,7 +21,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
@@ -70,7 +70,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ AGENT_NAME +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
-                +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
+                +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+AMOUNT +" TEXT NOT NULL DEFAULT '',"+STATUS+" TEXT"+")";
         String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT ''"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_WITHDRAWAL_REQUESTS);
@@ -194,6 +194,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(CONFIRMATION, confirmation);
         cv.put(STATUS, "OK");
         db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
+        db.close();
+    }
+    public void updateWithdrawalDataAmount(int id, String amount){
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(AMOUNT, amount);
+
+        db.update(TABLE_WITHDRAWAL_REQUESTS, cv,ID+" = ?" ,new String[]{amount});
         db.close();
     }
     public boolean updateWithdrawalConfirmation(int id){
@@ -329,5 +338,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqliteDatabase.update(TABLE_VIRTUAL_AGENTS, cv,AGENT_NUMBER+" = ?" ,new String[]{agentNumber});
         sqliteDatabase.close();
     }
+
 
 }

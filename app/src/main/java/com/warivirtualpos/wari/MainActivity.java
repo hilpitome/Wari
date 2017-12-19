@@ -35,16 +35,17 @@ import okhttp3.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-    DatabaseHandler databaseHandler;
-    RecyclerView recyclerView;
-    List<MainObject> items = new ArrayList<>();
-    List<TransferRequestData> transferRequestDataList = new ArrayList<>();
-    List<WithdrawalData> withdrawalDataList = new ArrayList<>();
-    ComplexRecyclerViewAdapter complexRecyclerViewAdapter;
-    TextView noTextsTv;
-    SwipeRefreshLayout swipeRefreshLayout;
+    private DatabaseHandler databaseHandler;
+    private RecyclerView recyclerView;
+    private List<MainObject> items = new ArrayList<>();
+    private List<TransferRequestData> transferRequestDataList = new ArrayList<>();
+    private List<WithdrawalData> withdrawalDataList = new ArrayList<>();
+    private ComplexRecyclerViewAdapter complexRecyclerViewAdapter;
+    private TextView noTextsTv;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private String agentsUrl = WariSecrets.agentsUrl;
+    private String mUrl = WariSecrets.mUrl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -195,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             Request request = new Request.Builder()
-                    .url(agentsUrl)
+                    .url(mUrl)
                     .build();
             Response response = null;
             try {

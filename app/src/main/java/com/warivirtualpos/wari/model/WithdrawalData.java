@@ -8,8 +8,8 @@ import android.util.Log;
 
 public class WithdrawalData extends MainObject{
 
-    String agentNumber,agentName, date, lastname, firstname, phone, confirmation, status;
-    int sqliteId, amount;
+    String agentNumber,agentName, date, lastname, firstname, phone, confirmation, status, amount;
+    int sqliteId;
     public WithdrawalData(){
     }
     public WithdrawalData(String date, String lastname, String firstname, String phone, String confirmation){
@@ -94,7 +94,11 @@ public class WithdrawalData extends MainObject{
         this.agentName = agentName;
     }
 
-    public int getAmount() {
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+
+    public String getAmount() {
         return amount;
     }
 }
