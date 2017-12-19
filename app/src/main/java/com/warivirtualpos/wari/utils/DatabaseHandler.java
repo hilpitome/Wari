@@ -92,6 +92,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     // add a new row
     public void addRequestData(TransferRequestData transferRequestData){
 
+
+
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -105,10 +107,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(AMOUNT, transferRequestData.getAmount());
         contentValues.put(STATUS, transferRequestData.getStatus());
         contentValues.put(CONFIRMATION, transferRequestData.getConfirmation());
+        contentValues.put(AGENT_NUMBER, transferRequestData.getAgentNumber());
         db.insert(TABLE_TRANSFER_REQUESTS , null, contentValues);
         db.close();
     }
-    public List<TransferRequestData> getRequestData(){
+    public List<TransferRequestData> getTransferRequestData(){
 
         List<TransferRequestData> records = new ArrayList<>();
         SQLiteDatabase db = getReadableDatabase();
@@ -129,10 +132,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String beneficiaryPhone = cursor.getString(cursor.getColumnIndex(BENEFICIARY_PHONE));
             String status = cursor.getString(cursor.getColumnIndex(STATUS));
             String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+            String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
             TransferRequestData transferRequestData = new TransferRequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
                     beneficiaryPhone, status);
             transferRequestData.setSqliteId(id);
             transferRequestData.setConfirmation(confirmation);
+            transferRequestData.setAgentNumber(agentNumber);
             records.add(transferRequestData);
 
         }
@@ -222,10 +227,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String beneficiaryPhone = cursor.getString(cursor.getColumnIndex(BENEFICIARY_PHONE));
         String status = cursor.getString(cursor.getColumnIndex(STATUS));
         String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+        String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
         TransferRequestData transferRequestData = new TransferRequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
                 beneficiaryPhone, status);
         transferRequestData.setSqliteId(id);
         transferRequestData.setConfirmation(confirmation);
+        transferRequestData.setAgentNumber(agentNumber);
 
         db.close();
 
@@ -298,14 +305,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Agent checkIfAgent(String phoneNumber) {
         SQLiteDatabase sqliteDatabase = getReadableDatabase();
         Agent agent=null;
-        String query = "SELECT * FROM "+TABLE_VIRTUAL_AGENTS+" WHERE "+AGENT_NUMBER+" = " + phoneNumber;
-        Cursor  cursor = sqliteDatabase.rawQuery(query,null);
+        Cursor cursor = sqliteDatabase.rawQuery("SELECT * FROM "+TABLE_VIRTUAL_AGENTS+" WHERE "+AGENT_NUMBER+" = ?", new String[] { phoneNumber });
 
+        if (cursor.getCount()>0) {
 
-        if (cursor != null) {
-            cursor.moveToFirst();
+            cursor.moveToNext();
             agent = new Agent();
-            agent.setSdNumber(cursor.getString(cursor.getColumnIndex(AGENT_NUMBER)));
+            agent.setSdNumber(phoneNumber);
             agent.setSdNumber(cursor.getString(cursor.getColumnIndex(AGENT_BALANCE)));
         }
 

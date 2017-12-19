@@ -32,7 +32,7 @@ public class TransferRequestsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         databaseHandler = new DatabaseHandler(getActivity());
-        records = databaseHandler.getRequestData();
+        records = databaseHandler.getTransferRequestData();
         Log.e("withdrawalsize", String.valueOf(records.size()));
     }
     @Override

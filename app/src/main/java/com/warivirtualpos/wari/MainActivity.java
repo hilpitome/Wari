@@ -62,11 +62,16 @@ public class MainActivity extends AppCompatActivity {
 
         if(agentList.size()<1){
             // download from online database
-
             AgentsTask agentsTask = new AgentsTask();
             agentsTask.execute(agentsUrl);
 
         }
+
+//        Agent agent = new Agent();
+//        agent.setSdNumber("+254729054248");
+//        agent.setSdBalance("100000");
+
+//        databaseHandler.addAgentDetails(agent);
 
 
 //        Date date = new Date();
@@ -156,11 +161,10 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(layoutManager);
         complexRecyclerViewAdapter = new ComplexRecyclerViewAdapter(this);
-
         recyclerView.setAdapter(complexRecyclerViewAdapter);
     }
     private void setItemList() {
-        transferRequestDataList = databaseHandler.getRequestData();
+        transferRequestDataList = databaseHandler.getTransferRequestData();
         withdrawalDataList = databaseHandler.getWithdrawalData();
         this.items.clear();
         for (TransferRequestData transferRequestData : transferRequestDataList) {

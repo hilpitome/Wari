@@ -67,8 +67,11 @@ public class IncomingSms extends BroadcastReceiver {
                     String message = currentSMS.getDisplayMessageBody();
 
                     if (message.toLowerCase().contains("envoi")) {
+
+                        Log.e("numb", senderNo);
                         // check if the sms is from a valid agent as per sqlite database
                        if(checkPhoneNumber(senderNo)){
+                           Log.e("agentNum", "got here") ;
                            String[] messageArray = message.split("\\#");
                            String[] senderInfoArr = messageArray[0].split("\\*");
                            String[] beneficiaryInfoArr = messageArray[1].split("\\*");
