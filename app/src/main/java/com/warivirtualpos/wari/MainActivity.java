@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 //        Agent agent = new Agent();
 //        agent.setSdNumber("+254729054248");
 //        agent.setSdBalance("100000");
-
+//
 //        databaseHandler.addAgentDetails(agent);
 
 
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                     .build();
 
             Request request = new Request.Builder()
-                    .url(mUrl)
+                    .url(agentsUrl)
                     .build();
             Response response = null;
             try {

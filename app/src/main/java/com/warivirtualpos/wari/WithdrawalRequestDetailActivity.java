@@ -82,17 +82,21 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
             case R.id.validate_btn:
                 SmsManager smsManager = SmsManager.getDefault();
 
+                String amount = amountEt.getText().toString().trim();
+                withdrawalData.getAgentNumber();
                 Agent agent = databaseHandler.checkIfAgent(withdrawalData.getAgentNumber());
-                int balance = Integer.valueOf(agent.getSdBalance()) - Integer.valueOf(withdrawalData.getAmount());
+                int balance = Integer.valueOf(agent.getSdBalance()) - Integer.valueOf(amount);
                 agent.setSdBalance(String.valueOf(balance));
-                UpdateOnlineDatabase updateOnlineDatabase = new UpdateOnlineDatabase();
+                // update agent online balance
+                UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
                 updateOnlineDatabase.execute(agent);
+                // update agent local balance
                 databaseHandler.updateSqliteBalance(balance, withdrawalData.getAgentNumber());
 
-                String smsMessage = "You have been authorized to give " + withdrawalData.getLastname() + " " + amountEt.getText().toString();
-                smsManager.sendTextMessage("agentPhone", null, smsMessage, null, null);
+                String smsMessage = "You have been authorized to give " + withdrawalData.getLastname() + " " + amount;
+                smsManager.sendTextMessage(withdrawalData.getAgentNumber(), null, smsMessage, null, null);
                 withdrawalData.setAmount(amountEt.getText().toString().trim());
-                databaseHandler.updateWithdrawalDataAmount(sqliteId, amountEt.getText().toString().trim());
+                databaseHandler.updateWithdrawalDataAmount(sqliteId, amount);
                 startActivity(new Intent(WithdrawalRequestDetailActivity.this, MainActivity.class));
 
                 break;
@@ -107,7 +111,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
 
     }
 
-    private class UpdateOnlineDatabase extends AsyncTask<Agent, String, String> {
+    private class UpdateOnlineDatabaseTask extends AsyncTask<Agent, String, String> {
 
         @Override
         protected String doInBackground(Agent... params) {
@@ -116,7 +120,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
 
             String resp = "";
             Agent agent = params[0];
-            Log.e("agent ", agent.getSdNumber());
+
             formBody = new FormBody.Builder()
                     .add("sd_number", agent.getSdNumber())
                     .add("last_balance", agent.getSdBalance())

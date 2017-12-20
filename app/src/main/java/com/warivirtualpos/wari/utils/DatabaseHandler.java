@@ -158,6 +158,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(WITHDARAWER_PHONE, withdrawalData.getPhone());
         contentValues.put(CONFIRMATION, withdrawalData.getConfirmation());
         contentValues.put(STATUS, withdrawalData.getStatus());
+        contentValues.put(AGENT_NUMBER, withdrawalData.getAgentNumber());
         db.insert(TABLE_WITHDRAWAL_REQUESTS , null, contentValues);
         db.close();
     }
@@ -202,7 +203,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         ContentValues cv = new ContentValues();
         cv.put(AMOUNT, amount);
 
-        db.update(TABLE_WITHDRAWAL_REQUESTS, cv,ID+" = ?" ,new String[]{amount});
+        db.update(TABLE_WITHDRAWAL_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
         db.close();
     }
     public boolean updateWithdrawalConfirmation(int id){
@@ -264,6 +265,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String lastName = cursor.getString(cursor.getColumnIndex(WITHDRAWER_LAST_NAME));
         String phone = cursor.getString(cursor.getColumnIndex(WITHDARAWER_PHONE));
         String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
+        String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
         WithdrawalData withdrawalData = new WithdrawalData();
         withdrawalData.setSqliteId(sqliteId);
         withdrawalData.setDate(date);
@@ -271,7 +273,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         withdrawalData.setLastname(lastName);
         withdrawalData.setPhone(phone);
         withdrawalData.setConfirmation(confirmation);
-
+        withdrawalData.setAgentNumber(agentNumber);
         db.close();
 
         return withdrawalData;
@@ -314,14 +316,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public Agent checkIfAgent(String phoneNumber) {
         SQLiteDatabase sqliteDatabase = getReadableDatabase();
         Agent agent=null;
-        Cursor cursor = sqliteDatabase.rawQuery("SELECT * FROM "+TABLE_VIRTUAL_AGENTS+" WHERE "+AGENT_NUMBER+" = ?", new String[] { phoneNumber });
+        Cursor cursor = sqliteDatabase.rawQuery("SELECT * FROM "+TABLE_VIRTUAL_AGENTS+" WHERE "+AGENT_NUMBER+" = ?", new String[] {phoneNumber});
 
         if (cursor.getCount()>0) {
 
             cursor.moveToNext();
             agent = new Agent();
             agent.setSdNumber(phoneNumber);
-            agent.setSdNumber(cursor.getString(cursor.getColumnIndex(AGENT_BALANCE)));
+            agent.setSdBalance(cursor.getString(cursor.getColumnIndex(AGENT_BALANCE)));
         }
 
 

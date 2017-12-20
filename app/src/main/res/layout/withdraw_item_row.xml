@@ -19,14 +19,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/agent_number_text"
-                android:text="+127890987"
                 android:textColor="@color/yellow_500"/>
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:id="@+id/agent_name_text"
-                android:text="LuaLua"
                 android:textColor="@color/yellow_500"/>
             <TextView
                 android:layout_width="0dp"

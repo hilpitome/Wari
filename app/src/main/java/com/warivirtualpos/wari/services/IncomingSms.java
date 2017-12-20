@@ -65,6 +65,7 @@ public class IncomingSms extends BroadcastReceiver {
                     String senderNo = currentSMS.getDisplayOriginatingAddress();
 
                     String message = currentSMS.getDisplayMessageBody();
+                    Log.e("numb1", senderNo);
 
                     if (message.toLowerCase().contains("envoi")) {
 
@@ -118,6 +119,7 @@ public class IncomingSms extends BroadcastReceiver {
 
                             WithdrawalData withdrawalData = new WithdrawalData(now, lastname, firstname, phone, confirmation);
                             withdrawalData.setStatus("PENDING");
+                            withdrawalData.setAgentNumber(senderNo);
 
                             databaseHandler.addWithdrawalData(withdrawalData);
                             SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
