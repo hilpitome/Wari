@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "237215354794",
+    "firebase_url": "https://wari-63e15.firebaseio.com",
+    "project_id": "wari-63e15",
+    "storage_bucket": "wari-63e15.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:237215354794:android:e59c213e47790e60",
+        "android_client_info": {
+          "package_name": "com.warivirtualpos.wari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "237215354794-n2lkuk1qujfr24i75849p03i065i2csq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.warivirtualpos.wari",
+            "certificate_hash": "350aaf0f9185140068a657e1a74c2c71240df33b"
+          }
+        },
+        {
+          "client_id": "237215354794-884kjjo5g79rck4hbjt48qhg7m34oeii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEIMWm-z8ultMoxe69FOok9WozeET_5W8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "237215354794-884kjjo5g79rck4hbjt48qhg7m34oeii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Wari Version 3</string>
+    <string name="app_name">Wari1.5.4</string>
 
     <!--Navigation Drawer-->
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -24,6 +24,11 @@
     <string name="confirmation">CONFIRMATION</string>
     <string name="alert_dialog_ok">OK</string>
     <string name="alert_dialog_cancel">CANCEL</string>
-    <string name="agent_details">Agent Details</string>
-    <string name="agent_number">Agent Number</string>
+    <string name="agent_details">Details</string>
+    <string name="agent_number">Number</string>
+    <string name="save">save</string>
+    <string name="add_virtual_agent">Add Virtual Agent</string>
+    <string name="e_g_chamesou">Enter Name</string>
+    <string name="e_g_10000">Enter Balance</string>
+    <string name="e_g_221778xxxxxx">Enter Number</string>
 </resources>

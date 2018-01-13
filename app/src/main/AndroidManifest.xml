@@ -7,6 +7,11 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+
+    <!-- Get Network State -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+
     <application
         android:name=".MainApplication"
         android:allowBackup="true"
@@ -38,7 +43,27 @@
         <activity
             android:name=".WithdrawalRequestDetailActivity"
             android:label="@string/title_activity_withdrawal_request_detail"
-            android:theme="@style/AppTheme"></activity>
+            android:theme="@style/AppTheme"/>
+        <activity android:name=".AddAgentActivity"
+            android:theme="@style/AppTheme"/>
+        <receiver
+            android:name=".services.ConnectivityReceiver"
+            android:enabled="true"
+            android:exported="false">
+
+            <!--
+            <intent-filter>
+                <action android:name ="android.net.conn.CONNECTIVITY_ACTION" />
+                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
+<<<<<<< HEAD
+            </intent-filter>-->
+            <intent-filter>
+                <action android:name="com.mobidev.kerichocountyagents.SendRealmBroadcast" >
+                </action>
+            </intent-filter>
+
+        </receiver>
+
     </application>
 
 </manifest>

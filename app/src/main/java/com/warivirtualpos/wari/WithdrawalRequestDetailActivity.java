@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.model.WithdrawalData;
@@ -40,7 +41,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
         setContentView(R.layout.activity_withdrawal_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Withdrawal Detail Version 3");
+        getSupportActionBar().setTitle("Withdrawal Detail");
         Bundle bundle = getIntent().getExtras();
         sqliteId = bundle.getInt("sqliteId");
         databaseHandler = new DatabaseHandler(this);
@@ -85,15 +86,15 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
                 String amount = amountEt.getText().toString().trim();
                 withdrawalData.getAgentNumber();
                 Agent agent = databaseHandler.checkIfAgent(withdrawalData.getAgentNumber());
-                int balance = Integer.valueOf(agent.getSdBalance()) - Integer.valueOf(amount);
-                agent.setSdBalance(String.valueOf(balance));
+                int balance = agent.getSdBalance() - Integer.valueOf(amount);
+                agent.setSdBalance(balance);
                 // update agent online balance
                 UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
                 updateOnlineDatabase.execute(agent);
                 // update agent local balance
                 databaseHandler.updateSqliteBalance(balance, withdrawalData.getAgentNumber());
 
-                String smsMessage = "You have been authorized to give " + withdrawalData.getLastname() + " " + amount;
+                String smsMessage = "Remettre "+amount+" au Client "+ withdrawalData.getLastname()+" "+withdrawalData.getPhone()+" "+ "suite Confirmation "+ withdrawalData.getConfirmation();
                 smsManager.sendTextMessage(withdrawalData.getAgentNumber(), null, smsMessage, null, null);
                 withdrawalData.setAmount(amountEt.getText().toString().trim());
                 databaseHandler.updateWithdrawalDataAmount(sqliteId, amount);
@@ -123,7 +124,8 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
 
             formBody = new FormBody.Builder()
                     .add("sd_number", agent.getSdNumber())
-                    .add("last_balance", agent.getSdBalance())
+                    .add("last_balance", String.valueOf(agent.getSdBalance()))
+                    .add("update", "1")
                     .build();
 
 
@@ -147,6 +149,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println(s);
+            Toast.makeText(getApplicationContext(),s, Toast.LENGTH_LONG).show();
 
 
         }

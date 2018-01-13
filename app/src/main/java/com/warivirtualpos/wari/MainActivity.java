@@ -1,5 +1,6 @@
 package com.warivirtualpos.wari;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
@@ -55,24 +59,26 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         databaseHandler = new DatabaseHandler(this);
 
-
-
-        List<Agent> agentList = databaseHandler.getAgentsData();
-
-        Log.e("agents", String.valueOf(agentList.size()));
-
-        if(agentList.size()<1){
-            // download from online database
-            AgentsTask agentsTask = new AgentsTask();
-            agentsTask.execute(agentsUrl);
-
-        }
-
-//        Agent agent = new Agent();
-//        agent.setSdNumber("+254729054248");
-//        agent.setSdBalance("100000");
+//        List<Agent> agentList = databaseHandler.getAgentsData();
 //
-//        databaseHandler.addAgentDetails(agent);
+//        Log.e("agents", String.valueOf(agentList.size()));
+//
+//        if(agentList.size()<1){
+//            // download from online database
+//            AgentsTask agentsTask = new AgentsTask();
+//            agentsTask.execute(agentsUrl);
+//
+//        }
+//
+//        Log.e("west", "london");
+//
+//       if(!checkPhoneNumber("+254729054248")){
+//           Log.e("east", "london");
+//           Agent agent = new Agent();
+//           agent.setSdNumber("+254729054248");
+//           agent.setSdBalance("700");
+//           databaseHandler.addAgentDetails(agent);
+//       }
 
 
 //        Date date = new Date();
@@ -220,6 +226,35 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+    }
+    private boolean checkPhoneNumber(String phoneNumber){
+        if(databaseHandler.checkIfAgent(phoneNumber)!=null){
+            return  true;
+        } else {
+            return false;
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main_menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.add_agent:
+                startActivity(new Intent(MainActivity.this, AddAgentActivity.class));
+                break;
+
+
+            default:
+                break;
+        }
+
+        return true;
     }
 
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.model.TransferRequestData;
@@ -40,6 +41,7 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
     private int sqliteId;
 
     private String mUrl = WariSecrets.mUrl;
+    private String confirmString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
         setContentView(R.layout.activity_transfer_request_detail);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("TransferRequest Detail Version 3");
+        getSupportActionBar().setTitle("TransferRequest Detail");
         Bundle bundle = getIntent().getExtras();
         sqliteId = bundle.getInt("sqliteId");
         databaseHandler = new DatabaseHandler(this);
@@ -91,23 +93,25 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
     @Override
     public void onClick(View v) {
         int id = v.getId();
-        String confirmString = confirmationEt.getText().toString().trim();
+        confirmString = confirmationEt.getText().toString().trim();
         switch (id){
             case R.id.ok_btn:
                 SmsManager smsManager = SmsManager.getDefault();
                 if(confirmString.length()<1){
+                    confirmString = "";
                     startActivity(new Intent(TransferRequestDetailActivity.this, MainActivity.class));
                 }
-                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString);
+                
                 Agent agent  = databaseHandler.checkIfAgent(transferRequestData.getAgentNumber());
                 int balance = transferRequestData.getAmount() + Integer.valueOf(agent.getSdBalance());
+                agent.setSdBalance(balance);
                 // update agent online balance
                 UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
                 updateOnlineDatabase.execute(agent);
                 // update local sqlite database
                 databaseHandler.updateSqliteBalance(balance, transferRequestData.getAgentNumber());
 
-                String smsMessage = "You have been authorized to accept "+ transferRequestData.getAmount()+"from "+transferRequestData.getSenderLastName();
+                String smsMessage = "Collecter "+ transferRequestData.getAmount()+" de "+transferRequestData.getSenderLastName()+" avec Confirmation "+ confirmString;
                 smsManager.sendTextMessage(transferRequestData.getAgentNumber(), null, smsMessage, null, null);
                 startActivity(new Intent(TransferRequestDetailActivity.this, MainActivity.class));
                 break;
@@ -124,7 +128,7 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
     }
     private class UpdateOnlineDatabaseTask extends AsyncTask<Agent, String, String> {
 
-    @Override
+        @Override
         protected String doInBackground(Agent... params) {
             OkHttpClient client = new OkHttpClient();
             RequestBody formBody = null;
@@ -134,7 +138,8 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
 
             formBody = new FormBody.Builder()
                     .add("sd_number", agent.getSdNumber())
-                    .add("last_balance", agent.getSdBalance())
+                    .add("last_balance", String.valueOf(agent.getSdBalance()))
+                    .add("update", "1")
                     .build();
 
             Request request = new Request.Builder()
@@ -153,12 +158,21 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
             return resp;
 
         }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println(s);
+            Toast.makeText(getApplicationContext(),s, Toast.LENGTH_LONG).show();
+            if(s.equals("Agent balance updated successfully")){
+                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "true");
+            } else {
+                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "false");
+            }
 
 
         }
+
     }
+
 }

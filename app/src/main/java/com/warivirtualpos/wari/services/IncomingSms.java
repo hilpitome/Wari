@@ -50,8 +50,6 @@ public class IncomingSms extends BroadcastReceiver {
         Bundle bundle = intent.getExtras();
         mUrl = WariSecrets.mUrl;
 
-
-        Log.e("mUrl", mUrl);
         if (bundle != null) {
             Object[] pdu_Objects = (Object[]) bundle.get("pdus");
             if (pdu_Objects != null) {
@@ -65,14 +63,13 @@ public class IncomingSms extends BroadcastReceiver {
                     String senderNo = currentSMS.getDisplayOriginatingAddress();
 
                     String message = currentSMS.getDisplayMessageBody();
-                    Log.e("numb1", senderNo);
+
 
                     if (message.toLowerCase().contains("envoi")) {
 
-                        Log.e("numb", senderNo);
                         // check if the sms is from a valid agent as per sqlite database
                        if(checkPhoneNumber(senderNo)){
-                           Log.e("agentNum", "got here") ;
+
                            String[] messageArray = message.split("\\#");
                            String[] senderInfoArr = messageArray[0].split("\\*");
                            String[] beneficiaryInfoArr = messageArray[1].split("\\*");
@@ -100,8 +97,7 @@ public class IncomingSms extends BroadcastReceiver {
                            );
                            transferRequestData.setAgentNumber(senderNo);
                            databaseHandler.addRequestData(transferRequestData);
-                           SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
-                           sendToMySqlTask.execute(transferRequestData);
+
 
                        }
 
@@ -122,8 +118,7 @@ public class IncomingSms extends BroadcastReceiver {
                             withdrawalData.setAgentNumber(senderNo);
 
                             databaseHandler.addWithdrawalData(withdrawalData);
-                            SendToMySqlTask sendToMySqlTask = new SendToMySqlTask();
-                            sendToMySqlTask.execute(withdrawalData);
+
                         }
 
                         //
@@ -149,66 +144,7 @@ public class IncomingSms extends BroadcastReceiver {
 
     }
 
-    private class SendToMySqlTask extends AsyncTask<Object, String, String> {
 
-        // save things
-
-
-        @Override
-        protected String doInBackground(Object... params) {
-            String resp ="";
-            OkHttpClient client = new OkHttpClient();
-            RequestBody formBody = null;
-
-            if(params[0] instanceof TransferRequestData){
-
-//                SmsData smsData = (SmsData) params[0];
-//                Log.e("Total_Caisse ", smsData.getTotalCaisse());
-//                formBody =   new FormBody.Builder()
-//                        .add("SD_Number", smsData.getSdNumber())
-//                        .add("Cash_recu", smsData.getCashRecu())
-//                        .add("Vente_Serveur", smsData.getVenteServuer())
-//                        .add("Total_Caisse", smsData.getTotalCaisse())
-//                        .build();
-
-            } else if (params[0] instanceof WithdrawalData){
-//                MessagesOperatuerData messagesOperatuerData = (MessagesOperatuerData) params[0];
-//                formBody =   new FormBody.Builder()
-//                        .add("date", messagesOperatuerData.getDate())
-//                        .add("title", messagesOperatuerData.getTitle())
-//                        .add("description", messagesOperatuerData.getDescription())
-//                        .add("phone_number", messagesOperatuerData.getPhoneNumber())
-//                        .add("sim_number", messagesOperatuerData.getSimNumber())
-//                        .build();
-//                Log.e("phone", messagesOperatuerData.getSimNumber());
-            }
-
-//            Request request = new Request.Builder()
-//                    .url(mUrl)
-//                    .post(formBody)
-//                    .build();
-//            try {
-//                Response response = client.newCall(request).execute();
-//                resp = response.body().string();
-//
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//
-//            }
-
-            return resp;
-        }
-
-
-
-
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Log.i(TAG, s);
-            Toast.makeText(context, s, Toast.LENGTH_SHORT).show();
-        }
-    }
 
     private boolean checkPhoneNumber(String phoneNumber){
         if(databaseHandler.checkIfAgent(phoneNumber)!=null){

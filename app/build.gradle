@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+
 
 android {
     compileSdkVersion 25
@@ -7,8 +9,8 @@ android {
         applicationId "com.warivirtualpos.wari"
         minSdkVersion 15
         targetSdkVersion 25
-        versionCode 3
-        versionName "3.0"
+        versionCode 9
+        versionName "1.5.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -33,5 +35,11 @@ dependencies {
     compile 'com.squareup.okhttp3:okhttp:3.9.0'
     compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile('com.crashlytics.sdk.android:crashlytics:2.7.1@aar') {
+        transitive = true
+    }
+    compile 'com.google.firebase:firebase-core:11.8.0'
+
     testCompile 'junit:junit:4.12'
 }
+apply plugin: 'com.google.gms.google-services'
