@@ -1,5 +1,6 @@
 package com.warivirtualpos.wari;
 
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -86,23 +87,32 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
                 String amount = amountEt.getText().toString().trim();
                 withdrawalData.getAgentNumber();
                 Agent agent = databaseHandler.checkIfAgent(withdrawalData.getAgentNumber());
-                int balance = agent.getSdBalance() - Integer.valueOf(amount);
-                agent.setSdBalance(balance);
-                // update agent online balance
-                UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
-                updateOnlineDatabase.execute(agent);
-                // update agent local balance
-                databaseHandler.updateSqliteBalance(balance, withdrawalData.getAgentNumber());
 
-                String smsMessage = "Remettre "+amount+" au Client "+ withdrawalData.getLastname()+" "+withdrawalData.getPhone()+" "+ "suite Confirmation "+ withdrawalData.getConfirmation();
-                smsManager.sendTextMessage(withdrawalData.getAgentNumber(), null, smsMessage, null, null);
-                withdrawalData.setAmount(amountEt.getText().toString().trim());
-                databaseHandler.updateWithdrawalDataAmount(sqliteId, amount);
+                if(agent!=null) {
+                    int balance = agent.getSdBalance() - Integer.valueOf(amount);
+                    agent.setSdBalance(balance);
+                    // update agent online balance
+                    UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
+                    updateOnlineDatabase.execute(agent);
+                    // update agent local balance
+                    databaseHandler.updateSqliteBalance(balance, withdrawalData.getAgentNumber());
+
+                    String smsMessage = "Remettre " + amount + " au Client " + withdrawalData.getLastname() + " " + withdrawalData.getPhone() + " " + "suite Confirmation " + withdrawalData.getConfirmation();
+                    smsManager.sendTextMessage(withdrawalData.getAgentNumber(), null, smsMessage, null, null);
+                    withdrawalData.setAmount(amountEt.getText().toString().trim());
+                    databaseHandler.updateWithdrawalDataAmount(sqliteId, amount);
+                } else {
+                    Toast.makeText(this, "agent does not exist", Toast.LENGTH_SHORT).show();
+                }
                 startActivity(new Intent(WithdrawalRequestDetailActivity.this, MainActivity.class));
 
                 break;
             case R.id.cancel_btn:
-                // do nothing
+//                if(confirmString.length()>0 && !confirmString.equals(transferRequestData.getConfirmation())){
+//                    DialogFragment cancelConfirmationDialog = CancelConfirmationDialog.newInstance();
+//                    cancelConfirmationDialog.show(getFragmentManager(), "dialogue");
+//                }
+//                break;
                 startActivity(new Intent(WithdrawalRequestDetailActivity.this, MainActivity.class));
                 break;
 

@@ -16,7 +16,6 @@
         android:layout_weight="1"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
-
         android:weightSum="5">
         <TextView
             android:layout_width="match_parent"
@@ -25,35 +24,35 @@
             android:layout_marginTop="12dp"
             android:id="@+id/envoyeur_text"
             android:text="ENVOYEUR"
-            android:textColor="@color/white"/>
+            android:textColor="@color/yellow_400"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/sender_lastname_text"
             android:text="Toure"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/sender_firstname_text"
             android:text="Hisham"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/sender_phone_text"
             android:text="0787XXXXXX"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/amount_text"
             android:text="543"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
     </LinearLayout>
     <LinearLayout
         android:orientation="vertical"
@@ -68,33 +67,35 @@
             android:layout_marginTop="12dp"
             android:id="@+id/bénéficiaire_text"
             android:text="Bénéficiaire"
-            android:textColor="@color/white"/>
+            android:textColor="@color/yellow_400"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/beneficiary_lastname_text"
             android:text="Egesa"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/beneficiary_firstname_text"
             android:text="Hilary"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:id="@+id/beneficiary_phone_text"
             android:text="778908987"
-            android:textColor="@color/yellow_500"/>
+            android:textColor="@color/black"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:id="@+id/confirmation_et"/>
+            android:id="@+id/confirmation_et"
+            android:padding="4dp"
+            android:textColor="@color/black"/>
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"

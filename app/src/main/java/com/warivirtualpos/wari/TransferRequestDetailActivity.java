@@ -103,16 +103,20 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
                 }
                 
                 Agent agent  = databaseHandler.checkIfAgent(transferRequestData.getAgentNumber());
-                int balance = transferRequestData.getAmount() + Integer.valueOf(agent.getSdBalance());
-                agent.setSdBalance(balance);
-                // update agent online balance
-                UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
-                updateOnlineDatabase.execute(agent);
-                // update local sqlite database
-                databaseHandler.updateSqliteBalance(balance, transferRequestData.getAgentNumber());
+                if(agent!=null) {
+                    int balance = transferRequestData.getAmount() + Integer.valueOf(agent.getSdBalance());
+                    agent.setSdBalance(balance);
+                    // update agent online balance
+                    UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
+                    updateOnlineDatabase.execute(agent);
+                    // update local sqlite database
+                    databaseHandler.updateSqliteBalance(balance, transferRequestData.getAgentNumber());
 
-                String smsMessage = "Collecter "+ transferRequestData.getAmount()+" de "+transferRequestData.getSenderLastName()+" avec Confirmation "+ confirmString;
-                smsManager.sendTextMessage(transferRequestData.getAgentNumber(), null, smsMessage, null, null);
+                    String smsMessage = "Collecter " + transferRequestData.getAmount() + " de " + transferRequestData.getSenderLastName() + " avec Confirmation " + confirmString;
+                    smsManager.sendTextMessage(transferRequestData.getAgentNumber(), null, smsMessage, null, null);
+                } else {
+                    Toast.makeText(this, "agent does not exist", Toast.LENGTH_SHORT).show();
+                }
                 startActivity(new Intent(TransferRequestDetailActivity.this, MainActivity.class));
                 break;
             case  R.id.cancel_btn:

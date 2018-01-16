@@ -24,7 +24,7 @@
     <string name="confirmation">CONFIRMATION</string>
     <string name="alert_dialog_ok">OK</string>
     <string name="alert_dialog_cancel">CANCEL</string>
-    <string name="agent_details">Details</string>
+    <string name="agent_details">Agent</string>
     <string name="agent_number">Number</string>
     <string name="save">save</string>
     <string name="add_virtual_agent">Add Virtual Agent</string>

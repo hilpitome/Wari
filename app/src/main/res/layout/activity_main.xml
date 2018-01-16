@@ -25,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="11">
+        android:weightSum="11"
+        android:background="@color/mainActivityTitleLayoutBackground">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -35,7 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/agent_details"
-                android:textColor="@color/white"
+                android:textColor="@color/yellow_400"
                 android:textAlignment="center"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,7 +69,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/envoyeur_title"
-                android:textColor="@color/white"
+                android:textColor="@color/yellow_400"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
                 android:textAlignment="center"/>
@@ -109,12 +110,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="5"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginBottom="4dp">
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/b_n_ficiaire"
-                android:textColor="@color/white"
+                android:textColor="@color/yellow_400"
                 android:textAlignment="center"/>
             <LinearLayout
                 android:layout_width="match_parent"

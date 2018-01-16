@@ -72,7 +72,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ AGENT_NAME +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
-                +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+AMOUNT +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT 'false',"+STATUS+" TEXT"+")";
+                +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+AMOUNT +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT \'false\',"+STATUS+" TEXT"+")";
         String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_NAME +" TEXT,"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT ''"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_WITHDRAWAL_REQUESTS);
@@ -149,6 +149,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void addWithdrawalData(WithdrawalData withdrawalData){
+
+        Log.e("test", "adding data");
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();

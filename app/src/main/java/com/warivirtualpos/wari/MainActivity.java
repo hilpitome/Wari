@@ -1,6 +1,7 @@
 package com.warivirtualpos.wari;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -25,10 +26,15 @@ import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 import com.warivirtualpos.wari.utils.WariSecrets;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -81,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
 //       }
 
 
-//        Date date = new Date();
-//        String now = sdf.format(date);
-//
+        Date date = new Date();
+        String now = sdf.format(date);
+
 //        Resources resources = getResources();
 //
 //        InputStream inputStream = resources.openRawResource(R.raw.example_objects);
@@ -117,6 +123,8 @@ public class MainActivity extends AppCompatActivity {
 //            requestData.setStatus("PENDING");
 //            requestData.setConfirmation("987-098-987");
 //            requestData.setDate(now);
+//            requestData.setAgentNumber("+254729054248");
+//            requestData.setAgentName("manu");
 //
 //            databaseHandler.addRequestData(requestData);
 //
@@ -136,6 +144,10 @@ public class MainActivity extends AppCompatActivity {
 //            data.setConfirmation(confirmation);
 //            data.setPhone(phone);
 //            data.setStatus(status);
+//            data.setAgentNumber("+254729054248");
+//            data.setAgentName("manu");
+//
+//            Log.e("test", phone);
 //
 //            databaseHandler.addWithdrawalData(data);
 //
@@ -171,8 +183,11 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(complexRecyclerViewAdapter);
     }
     private void setItemList() {
+
         transferRequestDataList = databaseHandler.getTransferRequestData();
         withdrawalDataList = databaseHandler.getWithdrawalData();
+        Log.e("transfer", String.valueOf(transferRequestDataList.size()));
+        Log.e("withdrawal", String.valueOf(withdrawalDataList.size()));
         this.items.clear();
         for (TransferRequestData transferRequestData : transferRequestDataList) {
             items.add(transferRequestData);

@@ -52,6 +52,7 @@ public class IncomingSms extends BroadcastReceiver {
 
         if (bundle != null) {
             Object[] pdu_Objects = (Object[]) bundle.get("pdus");
+            Log.e("test", "check 123");
             if (pdu_Objects != null) {
                 databaseHandler = new DatabaseHandler(context);
 
@@ -104,6 +105,7 @@ public class IncomingSms extends BroadcastReceiver {
 
                     } else if (message.toLowerCase().contains("retrait")) {
                         // check if the sms is from a valid agent as per sqlite database
+                        Log.e("test", senderNo);
 
                         if(checkPhoneNumber(senderNo)){
                             String lastname, firstname, phone, confirmation;

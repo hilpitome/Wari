@@ -1,5 +1,6 @@
 package com.warivirtualpos.wari;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -128,7 +129,7 @@ public class AddAgentActivity extends AppCompatActivity implements View.OnClickL
             super.onPostExecute(s);
             System.out.println(s);
             Toast.makeText(getApplicationContext(),s, Toast.LENGTH_LONG).show();
-
+            startActivity(new Intent(AddAgentActivity.this, MainActivity.class));
 
         }
     }

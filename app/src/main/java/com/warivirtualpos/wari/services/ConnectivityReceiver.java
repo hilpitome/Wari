@@ -86,11 +86,11 @@ public class ConnectivityReceiver extends BroadcastReceiver {
             super.onPostExecute(s);
             System.out.println(s);
 
-            if(s.equals("Agent balance updated successfully")){
-                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "true");
-            } else {
-                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "false");
-            }
+//            if(s.equals("Agent balance updated successfully")){
+//                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "true");
+//            } else {
+//                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "false");
+//            }
 
 
         }
