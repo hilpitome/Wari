@@ -16,15 +16,17 @@
         android:layout_weight="1"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
-        android:weightSum="5">
+        android:weightSum="6">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_marginTop="12dp"
             android:id="@+id/envoyeur_text"
-            android:text="ENVOYEUR"
-            android:textColor="@color/yellow_400"/>
+            android:text="Envoyeur"
+            android:textSize="16sp"
+            android:textColor="@color/purple_400"
+           />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"
@@ -67,7 +69,8 @@
             android:layout_marginTop="12dp"
             android:id="@+id/bénéficiaire_text"
             android:text="Bénéficiaire"
-            android:textColor="@color/yellow_400"/>
+            android:textSize="16sp"
+            android:textColor="@color/purple_400"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="0dp"

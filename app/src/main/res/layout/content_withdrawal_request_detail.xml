@@ -28,11 +28,13 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
+                android:textSize="16sp"
+                android:textColor="@color/purple_400"
                 android:layout_weight="1"
                 android:layout_marginTop="12dp"
                 android:id="@+id/bénéficiaire_text"
                 android:text="Bénéficiaire"
-                android:textColor="@color/yellow_400"/>
+               />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
