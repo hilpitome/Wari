@@ -133,12 +133,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             String status = cursor.getString(cursor.getColumnIndex(STATUS));
             String confirmation = cursor.getString(cursor.getColumnIndex(CONFIRMATION));
             String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
+            String onlineStatus = cursor.getString(cursor.getColumnIndex(ONLINE_UPDATED));
             TransferRequestData transferRequestData = new TransferRequestData(date, senderLastName, senderFirstName, senderPhone, amount, beneficiaryLastName, beneficiaryFirstName,
                     beneficiaryPhone, status);
             transferRequestData.setSqliteId(id);
             transferRequestData.setConfirmation(confirmation);
             transferRequestData.setAgentNumber(agentNumber);
             records.add(transferRequestData);
+            Log.e("online", onlineStatus);
 
         }
 
@@ -149,8 +151,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void addWithdrawalData(WithdrawalData withdrawalData){
-
-        Log.e("test", "adding data");
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();

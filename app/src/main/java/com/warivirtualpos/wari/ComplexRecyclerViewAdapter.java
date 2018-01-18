@@ -94,7 +94,9 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
     }
 
     private void configureViewHolder2(WithdrawalDataViewHolder vh2, final int position) {
+
         final WithdrawalData withdrawalData = (WithdrawalData) items.get(position);
+
         vh2.getAgentNumberTv().setText(withdrawalData.getAgentNumber());
         vh2.getLastnameTv().setText(withdrawalData.getLastname());
         vh2.getFirstnameTv().setText(withdrawalData.getFirstname());
