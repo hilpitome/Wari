@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.widget.Toast;
 
 import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
@@ -12,6 +11,7 @@ import com.warivirtualpos.wari.utils.NetworkHelper;
 import com.warivirtualpos.wari.utils.WariSecrets;
 
 import java.io.IOException;
+import java.util.List;
 
 import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
@@ -41,6 +41,19 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         String networkType = NetworkHelper.getNetworkType(context);
         if (networkType == "WIFI" || networkType== "MOBILE")  {
+            System.out.println("network is on");
+
+            UpdateOnlineDatabaseTask updateOnlineDatabaseTask = new UpdateOnlineDatabaseTask();
+            List<Agent> agentList = databaseHandler.getAgentsData();
+            if(agentList.size()>0){
+
+                for (Agent agent:agentList) {
+
+                    updateOnlineDatabaseTask.execute(agent);
+
+                }
+
+            }
 
         }  else {
             System.out.println(networkType);

@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView noTextsTv;
     private SwipeRefreshLayout swipeRefreshLayout;
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-    private String agentsUrl = WariSecrets.agentsUrl;
+//    private String agentsUrl = WariSecrets.agentsUrl;
     private String mUrl = WariSecrets.mUrl;
 
     @Override
@@ -205,43 +205,43 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-    private class AgentsTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String resp = "";
-            OkHttpClient client = new OkHttpClient.Builder()
-                    .connectTimeout(10, TimeUnit.SECONDS)
-                    .writeTimeout(10, TimeUnit.SECONDS)
-                    .readTimeout(30, TimeUnit.SECONDS)
-                    .build();
-
-            Request request = new Request.Builder()
-                    .url(agentsUrl)
-                    .build();
-            Response response = null;
-            try {
-                response= client.newCall(request).execute();
-                resp = response.body().string();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return  resp;
-        }
-        @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            Gson gson = new GsonBuilder().create();
-            AgentsResponse agentsResponse = gson.fromJson(s, AgentsResponse.class);
-            if(agentsResponse.getStatus().equals("SUCCESS")){
-               for(Agent agent:agentsResponse.getResponseBody()){
-                   databaseHandler.addAgentDetails(agent);
-               }
-            }
-
-        }
-    }
+//    private class AgentsTask extends AsyncTask<String, String, String> {
+//
+//        @Override
+//        protected String doInBackground(String... params) {
+//            String resp = "";
+//            OkHttpClient client = new OkHttpClient.Builder()
+//                    .connectTimeout(10, TimeUnit.SECONDS)
+//                    .writeTimeout(10, TimeUnit.SECONDS)
+//                    .readTimeout(30, TimeUnit.SECONDS)
+//                    .build();
+//
+//            Request request = new Request.Builder()
+//                    .url(agentsUrl)
+//                    .build();
+//            Response response = null;
+//            try {
+//                response= client.newCall(request).execute();
+//                resp = response.body().string();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//            return  resp;
+//        }
+//        @Override
+//        protected void onPostExecute(String s) {
+//            super.onPostExecute(s);
+//            Gson gson = new GsonBuilder().create();
+//            AgentsResponse agentsResponse = gson.fromJson(s, AgentsResponse.class);
+//            if(agentsResponse.getStatus().equals("SUCCESS")){
+//               for(Agent agent:agentsResponse.getResponseBody()){
+//                   databaseHandler.addAgentDetails(agent);
+//               }
+//            }
+//
+//        }
+//    }
     private boolean checkPhoneNumber(String phoneNumber){
         if(databaseHandler.checkIfAgent(phoneNumber)!=null){
             return  true;

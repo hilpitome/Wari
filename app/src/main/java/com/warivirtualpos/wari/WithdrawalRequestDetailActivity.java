@@ -160,6 +160,13 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
             super.onPostExecute(s);
             System.out.println(s);
             Toast.makeText(getApplicationContext(),s, Toast.LENGTH_LONG).show();
+            if(s.equals("Agent balance updated successfully")){
+
+                databaseHandler.updateWithdrawalConfirmation(sqliteId);
+            }
+
+
+
 
 
         }

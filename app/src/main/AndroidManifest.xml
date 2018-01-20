@@ -50,18 +50,10 @@
             android:name=".services.ConnectivityReceiver"
             android:enabled="true"
             android:exported="false">
-
-            <!--
             <intent-filter>
-                <action android:name ="android.net.conn.CONNECTIVITY_ACTION" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-<<<<<<< HEAD
-            </intent-filter>-->
-            <intent-filter>
-                <action android:name="com.mobidev.kerichocountyagents.SendRealmBroadcast" >
-                </action>
             </intent-filter>
-
         </receiver>
 
     </application>

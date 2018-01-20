@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.warivirtualpos.wari.model.Agent;
+import com.warivirtualpos.wari.model.MainObject;
 import com.warivirtualpos.wari.model.TransferRequestData;
 import com.warivirtualpos.wari.model.WithdrawalData;
 
@@ -21,7 +22,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 10;
+    private static final int DATABASE_VERSION = 11;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
@@ -73,7 +74,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ AGENT_NAME +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
                 +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+AMOUNT +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT \'false\',"+STATUS+" TEXT"+")";
-        String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_NAME +" TEXT,"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT ''"+")";
+        String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_NAME +" TEXT,"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT 'false'"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_WITHDRAWAL_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_VIRTUAL_AGENTS);
@@ -223,6 +224,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
         cv.put(STATUS, "OK");
+        cv.put(ONLINE_UPDATED, "true");
         db.update(TABLE_WITHDRAWAL_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
         db.close();
         return true;
@@ -339,6 +341,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             agent.setSdBalance(cursor.getInt(cursor.getColumnIndex(AGENT_BALANCE)));
         }
 
+        cursor.close();
 
         sqliteDatabase.close();
 
@@ -352,6 +355,53 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cv.put(AGENT_BALANCE, amount);
         sqliteDatabase.update(TABLE_VIRTUAL_AGENTS, cv,AGENT_NUMBER+" = ?" ,new String[]{agentNumber});
         sqliteDatabase.close();
+    }
+
+
+    public List<MainObject> getOfflineTransferAndWithdrawalRecords(){
+
+        List<MainObject> offlineTransferAndWithdrawalData = new ArrayList<>();
+
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_TRANSFER_REQUESTS+" WHERE "+ONLINE_UPDATED+" = ?", new String[] {"false"});
+        Cursor cursor2 = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_WITHDRAWAL_REQUESTS+" WHERE "+ONLINE_UPDATED+" = ?", new String[] {"false"});
+        while (cursor.moveToNext()){
+          //do nothing for now
+        }
+
+        while (cursor2.moveToNext()){
+            //do nothing for now
+        }
+
+        cursor.close();
+        cursor2.close();
+
+        sqLiteDatabase.close();
+
+        return offlineTransferAndWithdrawalData;
+    }
+
+    public List<Agent> getAgentsWithOfflineBalances(){
+        List<Agent> agentList = new ArrayList<Agent>();
+        SQLiteDatabase sqLiteDatabase = getReadableDatabase();
+
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM "+TABLE_VIRTUAL_AGENTS+" WHERE "+ONLINE_UPDATED+" = ?", new String[] {"false"});
+        while (cursor.moveToNext()){
+            while(cursor.moveToNext()){
+                Agent agent = new Agent();
+                String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
+                String agentBalance = cursor.getString(cursor.getColumnIndex(AGENT_BALANCE));
+                agent.setSdNumber(agentNumber);
+                agent.setSdBalance(Integer.parseInt(agentBalance));
+
+                agentList.add(agent);
+
+            }
+        }
+
+        cursor.close();
+        sqLiteDatabase.close();
+        return agentList;
     }
 
 

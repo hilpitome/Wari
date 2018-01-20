@@ -3,12 +3,10 @@ package com.warivirtualpos.wari.services;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.telephony.SmsMessage;
 import android.util.Log;
-import android.widget.Toast;
 
 
 import com.warivirtualpos.wari.model.TransferRequestData;
@@ -16,12 +14,10 @@ import com.warivirtualpos.wari.model.WithdrawalData;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
 import com.warivirtualpos.wari.utils.WariSecrets;
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import okhttp3.OkHttpClient;
-import okhttp3.RequestBody;
 
 
 /**
@@ -52,7 +48,7 @@ public class IncomingSms extends BroadcastReceiver {
 
         if (bundle != null) {
             Object[] pdu_Objects = (Object[]) bundle.get("pdus");
-            Log.e("test", "check 123");
+
             if (pdu_Objects != null) {
                 databaseHandler = new DatabaseHandler(context);
 
