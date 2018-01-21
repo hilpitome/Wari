@@ -231,7 +231,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
     }
 
-
     public TransferRequestData getSingleRequestRecord(int Id){
         SQLiteDatabase db = getReadableDatabase();
         String selectQuery = "SELECT  * FROM " + TABLE_TRANSFER_REQUESTS + " WHERE "
@@ -357,6 +356,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         sqliteDatabase.close();
     }
 
+    public void updateAgentOnlineUpdatedTrue(int id){
+
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put(ONLINE_UPDATED, "true");
+
+        db.update(TABLE_VIRTUAL_AGENTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
+        db.close();
+    }
+
 
     public List<MainObject> getOfflineTransferAndWithdrawalRecords(){
 
@@ -391,9 +400,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 Agent agent = new Agent();
                 String agentNumber = cursor.getString(cursor.getColumnIndex(AGENT_NUMBER));
                 String agentBalance = cursor.getString(cursor.getColumnIndex(AGENT_BALANCE));
+                int sqliteId = cursor.getInt(cursor.getColumnIndex(ID));
                 agent.setSdNumber(agentNumber);
                 agent.setSdBalance(Integer.parseInt(agentBalance));
-
+                agent.setSqliteId(sqliteId);
                 agentList.add(agent);
 
             }

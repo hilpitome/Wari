@@ -29,6 +29,7 @@
             android:layout_gravity="center_horizontal"
             android:id="@+id/name_et"
             android:textColor="@color/black"
+            android:textColorHint="@color/green_500"
             android:hint="@string/e_g_chamesou"/>
     </android.support.design.widget.TextInputLayout>
 
@@ -43,6 +44,7 @@
             android:layout_gravity="center_horizontal"
             android:hint="@string/e_g_221778xxxxxx"
             android:textColor="@color/black"
+            android:textColorHint="@color/green_500"
             android:id="@+id/sd_number_et"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
@@ -56,6 +58,7 @@
             android:layout_gravity="center_horizontal"
             android:hint="@string/e_g_10000"
             android:textColor="@color/black"
+            android:textColorHint="@color/green_500"
             android:id="@+id/sd_balance_et"/>
     </android.support.design.widget.TextInputLayout>
     <Button
@@ -64,6 +67,7 @@
         android:layout_gravity="center_horizontal"
         android:background="@color/orange_400"
         android:textColor="@color/black"
+        android:textColorHint="@color/green_500"
         android:id="@+id/add_agent_btn"
         android:text="@string/save"/>
 

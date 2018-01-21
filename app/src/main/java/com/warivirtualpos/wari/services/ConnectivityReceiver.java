@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.utils.DatabaseHandler;
@@ -27,33 +28,36 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     private Context context;
     private DatabaseHandler databaseHandler;
     private String mUrl = WariSecrets.mUrl;
+    int currentAgentId = 0;
     @Override
     public void onReceive(Context context, Intent intent) {
         this.context = context;
         databaseHandler = new DatabaseHandler(context);
 
-
-
         //Log.d("onReceive", NetworkHelper.getNetworkType(context));
         //Log.d("onReceive", String.valueOf(NetworkHelper.isNetworkConnected(context)));
 
-
-
         String networkType = NetworkHelper.getNetworkType(context);
-        if (networkType == "WIFI" || networkType== "MOBILE")  {
+        if (networkType == "WIFI" || networkType == "MOBILE")  {
             System.out.println("network is on");
 
-            UpdateOnlineDatabaseTask updateOnlineDatabaseTask = new UpdateOnlineDatabaseTask();
-            List<Agent> agentList = databaseHandler.getAgentsData();
+            List<Agent> agentList = databaseHandler.getAgentsWithOfflineBalances();
             if(agentList.size()>0){
 
                 for (Agent agent:agentList) {
-
+                   /* create a new instance of UpdateOnlineDatabaseTask everytime
+                    * because you can only call execute once
+                    */
+                    UpdateOnlineDatabaseTask updateOnlineDatabaseTask = new UpdateOnlineDatabaseTask();
                     updateOnlineDatabaseTask.execute(agent);
 
                 }
 
+            } else {
+                Log.e("offline", "no false");
             }
+
+
 
         }  else {
             System.out.println(networkType);
@@ -63,6 +67,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
     private class UpdateOnlineDatabaseTask extends AsyncTask<Agent, String, String> {
 
+
         @Override
         protected String doInBackground(Agent... params) {
             OkHttpClient client = new OkHttpClient();
@@ -70,6 +75,8 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
             String resp = "";
             Agent agent = params[0];
+
+            currentAgentId = agent.getSqliteId();
 
             formBody = new FormBody.Builder()
                     .add("sd_number", agent.getSdNumber())
@@ -94,16 +101,52 @@ public class ConnectivityReceiver extends BroadcastReceiver {
 
         }
 
+//        @Override
+//        protected String doInBackground(List<Agent>[] lists) {
+//            OkHttpClient client = new OkHttpClient();
+//            RequestBody formBody = null;
+//            Request request=null;
+//
+//            String resp = "";
+//            List<Agent> agents = lists[0];
+//
+//            for(Agent agent: agents){
+//                formBody = new FormBody.Builder()
+//                        .add("sd_number", agent.getSdNumber())
+//                        .add("last_balance", String.valueOf(agent.getSdBalance()))
+//                        .add("update", "1")
+//                        .build();
+//
+//                request = new Request.Builder()
+//                        .url(mUrl)
+//                        .post(formBody)
+//                        .build();
+//            }
+//
+//            try {
+//                Response response = client.newCall(request).execute();
+//                resp = response.body().string();
+//
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//
+//            }
+//
+//            return resp;
+//        }
+
         @Override
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
             System.out.println(s);
 
-//            if(s.equals("Agent balance updated successfully")){
-//                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "true");
-//            } else {
-//                databaseHandler.updateTransferRequestConfirmation(sqliteId, confirmString, "false");
-//            }
+            Log.e("num", String.valueOf(currentAgentId));
+
+            if(s.equals("Agent balance updated successfully")){
+                databaseHandler.updateAgentOnlineUpdatedTrue(currentAgentId);
+            } else {
+
+            }
 
 
         }
