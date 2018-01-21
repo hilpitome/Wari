@@ -3,7 +3,7 @@
     <color name="colorPrimary">#212121</color>
     <color name="colorPrimaryDark">#000000</color>
     <color name="colorAccent">@color/deep_purple_500</color>
-    <color name="windowColorBackground">#ffffff</color>
+    <color name="windowColorBackground">@color/grey_200</color>
     <color name="mainActivityTitleLayoutBackground">#484848</color>
 
 

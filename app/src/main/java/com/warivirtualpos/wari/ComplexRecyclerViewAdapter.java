@@ -125,10 +125,12 @@ public class ComplexRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerVie
         vh1.getAmountTv().setText(String.valueOf(transferRequestData.getAmount()));
         vh1.getBeneficiaryFirstnameTv().setText(transferRequestData.getBeneficiaryFirstname());
         vh1.getBeneficiaryLastnameTv().setText(transferRequestData.getBeneficiaryLastname());
+        Log.e("confirm", String.valueOf(transferRequestData.getConfirmation().length()));
+        if(transferRequestData.getConfirmation().length()==0){
 
-        if(transferRequestData.getConfirmation().length()>0){
+            vh1.getConfirmTv().setBackgroundColor(context.getResources().getColor(R.color.purple_500));
+        } else {
             vh1.getConfirmTv().setText(transferRequestData.getConfirmation());
-            vh1.getConfirmTv().setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
         }
 
         vh1.getStatusTv().setText(transferRequestData.getStatus());

@@ -66,6 +66,7 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
     }
 
     private void setViewComponents() {
+        Log.e("withdrawal", "this: "+withdrawalData.getConfirmation());
         lastNameTv.setText(withdrawalData.getLastname());
         firstNameTv.setText(withdrawalData.getFirstname());
         phoneNumberTv.setText(withdrawalData.getPhone());

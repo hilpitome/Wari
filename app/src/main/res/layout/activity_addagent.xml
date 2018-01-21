@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/grey_200">
+    >
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -44,7 +44,7 @@
             android:layout_gravity="center_horizontal"
             android:hint="@string/e_g_221778xxxxxx"
             android:textColor="@color/black"
-            android:textColorHint="@color/green_500"
+            android:textColorHint="@color/blue_A100"
             android:id="@+id/sd_number_et"/>
     </android.support.design.widget.TextInputLayout>
     <android.support.design.widget.TextInputLayout
