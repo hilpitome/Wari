@@ -162,11 +162,6 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
 
                 databaseHandler.updateWithdrawalConfirmation(sqliteId);
             }
-
-
-
-
-
         }
     }
 
