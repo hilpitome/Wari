@@ -128,12 +128,9 @@ public class WithdrawalRequestDetailActivity extends AppCompatActivity implement
         @Override
         protected String doInBackground(Agent... params) {
             OkHttpClient client = new OkHttpClient();
-            RequestBody formBody = null;
-
             String resp = "";
             Agent agent = params[0];
-
-            formBody = new FormBody.Builder()
+            RequestBody formBody = new FormBody.Builder()
                     .add("sd_number", agent.getSdNumber())
                     .add("last_balance", String.valueOf(agent.getSdBalance()))
                     .add("update", "1")

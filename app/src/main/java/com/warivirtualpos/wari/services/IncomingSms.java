@@ -36,8 +36,7 @@ public class IncomingSms extends BroadcastReceiver {
     private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     private  Context context;
     private DatabaseHandler databaseHandler;
-    private static int WITHDRAWAL = 1;
-    private static int TRANSFER = 0;
+
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -62,7 +61,10 @@ public class IncomingSms extends BroadcastReceiver {
                     String message = currentSMS.getDisplayMessageBody();
 
 
+                    Log.e("top", String.valueOf("at the top"));
+
                     if (message.toLowerCase().contains("envoi")) {
+                        Log.e("inside", String.valueOf("inside envoi"));
 
                         // check if the sms is from a valid agent as per sqlite database
                        if(checkPhoneNumber(senderNo)){
@@ -93,6 +95,7 @@ public class IncomingSms extends BroadcastReceiver {
                                    "PENDING"
                            );
                            transferRequestData.setAgentNumber(senderNo);
+
                            databaseHandler.addRequestData(transferRequestData);
 
 
@@ -101,7 +104,8 @@ public class IncomingSms extends BroadcastReceiver {
 
                     } else if (message.toLowerCase().contains("retrait")) {
                         // check if the sms is from a valid agent as per sqlite database
-                        Log.e("test", senderNo);
+                        Log.e("inside", String.valueOf("retrait"));
+
 
                         if(checkPhoneNumber(senderNo)){
                             String lastname, firstname, phone, confirmation;

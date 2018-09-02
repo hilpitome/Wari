@@ -99,6 +99,7 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
                 SmsManager smsManager = SmsManager.getDefault();
                 if(confirmString.length()<1){
                     confirmString = "";
+                    // note to self.. wtf? why restart?
                     startActivity(new Intent(TransferRequestDetailActivity.this, MainActivity.class));
                 }
                 
@@ -106,13 +107,13 @@ public class TransferRequestDetailActivity extends AppCompatActivity implements 
                 if(agent!=null) {
                     int balance = transferRequestData.getAmount() + Integer.valueOf(agent.getSdBalance());
                     agent.setSdBalance(balance);
-                    // update agent online balance
+                    // update agent online balyance
                     UpdateOnlineDatabaseTask updateOnlineDatabase = new UpdateOnlineDatabaseTask();
                     updateOnlineDatabase.execute(agent);
                     // update local sqlite database
                     databaseHandler.updateSqliteBalance(balance, transferRequestData.getAgentNumber());
 
-                    String smsMessage = "Collecter " + transferRequestData.getAmount() + " de " + transferRequestData.getSenderLastName() + " avec Confirmation " + confirmString;
+                    String smsMessage = "Collecter " + transferRequestData.getAmount() + " de "+ transferRequestData.getSenderFirstname()+" "+ transferRequestData.getSenderLastName() +" "+transferRequestData.getSenderPhone()+ " avec Confirmation " + confirmString;
                     smsManager.sendTextMessage(transferRequestData.getAgentNumber(), null, smsMessage, null, null);
                 } else {
                     Toast.makeText(this, "agent does not exist", Toast.LENGTH_SHORT).show();

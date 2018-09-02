@@ -14,6 +14,7 @@ import android.os.Bundle;
 
 public class CancelConfirmationDialog extends DialogFragment {
 
+
     public static CancelConfirmationDialog newInstance() {
         CancelConfirmationDialog frag = new CancelConfirmationDialog();
         return frag;

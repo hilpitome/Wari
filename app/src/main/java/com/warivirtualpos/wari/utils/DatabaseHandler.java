@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.warivirtualpos.wari.model.Agent;
 import com.warivirtualpos.wari.model.MainObject;
@@ -22,7 +23,7 @@ import java.util.List;
 public class DatabaseHandler extends SQLiteOpenHelper {
     // All Static variables
     // Database Version
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 1;
 
     // Database Name
     private static final String DATABASE_NAME = "wari_database";
@@ -74,7 +75,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String CREATE_TABLE_WITHDRAWAL_REQUESTS = "CREATE TABLE " + TABLE_WITHDRAWAL_REQUESTS  + "("
                 + ID + " INTEGER PRIMARY KEY," +AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+ AGENT_NAME +" TEXT NOT NULL DEFAULT '',"+DATE +" TEXT,"+WITHDRAWER_FIRST_NAME+" TEXT,"+WITHDRAWER_LAST_NAME +" TEXT,"
                 +WITHDARAWER_PHONE+" TEXT,"+CONFIRMATION+" TEXT NOT NULL DEFAULT '',"+AMOUNT +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT \'false\',"+STATUS+" TEXT"+")";
-        String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_NAME +" TEXT,"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT 'false'"+")";
+            String CREATE_TABLE_VIRTUAL_AGENTS = "CREATE TABLE " + TABLE_VIRTUAL_AGENTS +"("+ID+" INTEGER PRIMARY KEY,"+ AGENT_NUMBER +" TEXT NOT NULL DEFAULT '',"+AGENT_NAME +" TEXT,"+AGENT_BALANCE +" TEXT NOT NULL DEFAULT '',"+ONLINE_UPDATED +" TEXT NOT NULL DEFAULT 'false'"+")";
         sqLiteDatabase.execSQL(CREATE_TABLE_TRANSFER_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_WITHDRAWAL_REQUESTS);
         sqLiteDatabase.execSQL(CREATE_TABLE_VIRTUAL_AGENTS);
@@ -94,7 +95,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
     // add a new row
     public void addRequestData(TransferRequestData transferRequestData){
-
+        Log.e("data","adding transfer data with name"+ transferRequestData.getAgentName());
         SQLiteDatabase db = getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
@@ -152,6 +153,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     public void addWithdrawalData(WithdrawalData withdrawalData){
+        Log.e("data", String.valueOf("admin withdrawal with name: "+withdrawalData.getAgentName()));
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -162,7 +164,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         contentValues.put(CONFIRMATION, withdrawalData.getConfirmation());
         contentValues.put(STATUS, withdrawalData.getStatus());
         contentValues.put(AGENT_NUMBER, withdrawalData.getAgentNumber());
-        db.insert(TABLE_WITHDRAWAL_REQUESTS , null, contentValues);
+        long success = db.insert(TABLE_WITHDRAWAL_REQUESTS , null, contentValues);
+        Log.e("head", String.valueOf(success));
         db.close();
     }
 
@@ -187,6 +190,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             records.add(withdrawalData);
         }
 
+        cursor.close();
+
         db.close();
 
         return  records;
@@ -201,7 +206,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.update(TABLE_TRANSFER_REQUESTS, cv,ID+" = ?" ,new String[]{String.valueOf(id)});
         db.close();
     }
-    public void updateTransferRequestOnlineOnlineUpdated(int id){
+    public void updateTransferRequestOnlineUpdated(int id){
 
         SQLiteDatabase db = getWritableDatabase();
         ContentValues cv = new ContentValues();
